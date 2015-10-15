@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import uk.ac.dundee.computing.aec.instagrim.lib.CassandraHosts;
+import uk.ac.dundee.computing.aec.instagrim.lib.Validate;
 import uk.ac.dundee.computing.aec.instagrim.models.User;
 
 /**
@@ -48,12 +49,19 @@ public class Register extends HttpServlet {
         String username=request.getParameter("username");
         String password=request.getParameter("password");
         
-        User us=new User();
-        us.setCluster(cluster);
-        us.RegisterUser(username, password);
+        Validate notEmpty = new Validate();
+        if(! notEmpty.validCred(username, password))
+        {
+            response.sendRedirect("/Instagrim/register.jsp");
+        }
+        else{
+            User us=new User();
+            us.setCluster(cluster);
+            us.RegisterUser(username, password);
         
-	response.sendRedirect("/Instagrim");
+            response.sendRedirect("/Instagrim");
         
+        }
     }
 
     /**
