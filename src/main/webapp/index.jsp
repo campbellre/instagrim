@@ -20,34 +20,39 @@
             <h2>Your world in Black and White</h2>
         </header>
         <nav>
-            <ul>
-
-               
+            <ul>               
                 <li><a href="upload.jsp">Upload</a></li>
-                    <%
+                    <% 
                         
                         LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");
-                        if (lg != null) {
+                        if(lg != null) {
                             String UserName = lg.getUsername();
                             if (lg.getlogedin()) {
                     %>
 
-                <li><a href="/Instagrim/Images/<%=lg.getUsername()%>">Your Images</a></li>
-                    <%}
-                            }else{
-                                %>
-                 <li><a href="register.jsp">Register</a></li>
-                <li><a href="login.jsp">Login</a></li>
-                <%
-                                        
-                            
-                    }%>
+                        <li><a href="/Instagrim/Images/<%=lg.getUsername()%>">Your Images</a></li>
+                        <li><a href="/Instagrim/Logout.jsp">Log Out</a></li>
+                    <%
+                            }
+                            else{
+                    %>
+                        <li><a href="register.jsp">Register</a></li>
+                        <li><a href="login.jsp">Login</a></li>
+                    <%
+                            }
+                        }else{
+                    %>
+                    <li><a href="register.jsp">Register</a></li>
+                    <li><a href="login.jsp">Login</a></li>
+                    <%      
+                        }   
+                    %>
             </ul>
         </nav>
         <footer>
             <ul>
                 <li class="footer"><a href="/Instagrim">Home</a></li>
-                <li>&COPY; Andy C</li>
+                <li>&COPY; </li>
             </ul>
         </footer>
     </body>
