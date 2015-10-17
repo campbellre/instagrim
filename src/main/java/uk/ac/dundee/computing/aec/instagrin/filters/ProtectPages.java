@@ -6,51 +6,58 @@
 
 package uk.ac.dundee.computing.aec.instagrin.filters;
 
+import uk.ac.dundee.computing.aec.instagrim.stores.LoggedIn;
+
+import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import javax.servlet.DispatcherType;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import uk.ac.dundee.computing.aec.instagrim.stores.LoggedIn;
 
 /**
- *
  * @author Administrator
  */
 @WebFilter(filterName = "ProtectPages", urlPatterns = {"/upload.jsp"}, dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.INCLUDE})
 public class ProtectPages implements Filter {
-    
+
     private static final boolean debug = true;
 
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
     // configured. 
     private FilterConfig filterConfig = null;
-    
+
     public ProtectPages() {
-    }    
-    
+    }
+
+    public static String getStackTrace(Throwable t) {
+        String stackTrace = null;
+        try {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            t.printStackTrace(pw);
+            pw.close();
+            sw.close();
+            stackTrace = sw.getBuffer().toString();
+        } catch (Exception ex) {
+        }
+        return stackTrace;
+    }
+
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
             log("ProtectPages:DoBeforeProcessing");
         }
 
-	// Write code here to process the request and/or response before
+        // Write code here to process the request and/or response before
         // the rest of the filter chain is invoked.
-	// For example, a logging filter might log items on the request object,
+        // For example, a logging filter might log items on the request object,
         // such as the parameters.
-	/*
+    /*
          for (Enumeration en = request.getParameterNames(); en.hasMoreElements(); ) {
          String name = (String)en.nextElement();
          String values[] = request.getParameterValues(name);
@@ -66,18 +73,18 @@ public class ProtectPages implements Filter {
          log(buf.toString());
          }
          */
-    }    
-    
+    }
+
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
             log("ProtectPages:DoAfterProcessing");
         }
 
-	// Write code here to process the request and/or response after
+        // Write code here to process the request and/or response after
         // the rest of the filter chain is invoked.
-	// For example, a logging filter might log the attributes on the
-        // request object after the request has been processed. 
+        // For example, a logging filter might log the attributes on the
+        // request object after the request has been processed.
 	/*
          for (Enumeration en = request.getAttributeNames(); en.hasMoreElements(); ) {
          String name = (String)en.nextElement();
@@ -86,7 +93,7 @@ public class ProtectPages implements Filter {
 
          }
          */
-	// For example, a filter might append something to the response.
+        // For example, a filter might append something to the response.
 	/*
          PrintWriter respOut = new PrintWriter(response.getWriter());
          respOut.println("<P><B>This has been appended by an intrusive filter.</B>");
@@ -94,49 +101,47 @@ public class ProtectPages implements Filter {
     }
 
     /**
-     *
-     * @param request The servlet request we are processing
+     * @param request  The servlet request we are processing
      * @param response The servlet response we are creating
-     * @param chain The filter chain we are processing
-     *
-     * @exception IOException if an input/output error occurs
-     * @exception ServletException if a servlet error occurs
+     * @param chain    The filter chain we are processing
+     * @throws IOException      if an input/output error occurs
+     * @throws ServletException if a servlet error occurs
      */
     public void doFilter(ServletRequest request, ServletResponse response,
-            FilterChain chain)
+                         FilterChain chain)
             throws IOException, ServletException {
-        
+
         if (debug) {
             log("ProtectPages:doFilter()");
         }
-        
+
         doBeforeProcessing(request, response);
         System.out.println("Doing filter");
         HttpServletRequest httpReq = (HttpServletRequest) request;
-        HttpSession session=httpReq.getSession(false);
-	LoggedIn li=(LoggedIn)session.getAttribute("LoggedIn");
-        System.out.println("Session in filter "+session);
-        if ((li == null)  || (li.getlogedin()==false)){
-               System.out.println("Foward to login");
-                RequestDispatcher rd=request.getRequestDispatcher("/login.jsp");
-		rd.forward(request,response);
+        HttpSession session = httpReq.getSession(false);
+        LoggedIn li = (LoggedIn) session.getAttribute("LoggedIn");
+        System.out.println("Session in filter " + session);
+        if ((li == null) || (li.getlogedin() == false)) {
+            System.out.println("Foward to login");
+            RequestDispatcher rd = request.getRequestDispatcher("/login.jsp");
+            rd.forward(request, response);
 
-            
+
         }
         Throwable problem = null;
         try {
             chain.doFilter(request, response);
         } catch (Throwable t) {
-	    // If an exception is thrown somewhere down the filter chain,
+            // If an exception is thrown somewhere down the filter chain,
             // we still want to execute our after processing, and then
             // rethrow the problem after that.
             problem = t;
             t.printStackTrace();
         }
-        
+
         doAfterProcessing(request, response);
 
-	// If there was a problem, we want to rethrow it if it is
+        // If there was a problem, we want to rethrow it if it is
         // a known type, otherwise log it.
         if (problem != null) {
             if (problem instanceof ServletException) {
@@ -168,16 +173,16 @@ public class ProtectPages implements Filter {
     /**
      * Destroy method for this filter
      */
-    public void destroy() {        
+    public void destroy() {
     }
 
     /**
      * Init method for this filter
      */
-    public void init(FilterConfig filterConfig) {        
+    public void init(FilterConfig filterConfig) {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
-            if (debug) {                
+            if (debug) {
                 log("ProtectPages:Initializing filter");
             }
         }
@@ -196,20 +201,20 @@ public class ProtectPages implements Filter {
         sb.append(")");
         return (sb.toString());
     }
-    
+
     private void sendProcessingError(Throwable t, ServletResponse response) {
-        String stackTrace = getStackTrace(t);        
-        
+        String stackTrace = getStackTrace(t);
+
         if (stackTrace != null && !stackTrace.equals("")) {
             try {
                 response.setContentType("text/html");
                 PrintStream ps = new PrintStream(response.getOutputStream());
-                PrintWriter pw = new PrintWriter(ps);                
+                PrintWriter pw = new PrintWriter(ps);
                 pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
 
                 // PENDING! Localize this for next official release
-                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");                
-                pw.print(stackTrace);                
+                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");
+                pw.print(stackTrace);
                 pw.print("</pre></body>\n</html>"); //NOI18N
                 pw.close();
                 ps.close();
@@ -226,23 +231,9 @@ public class ProtectPages implements Filter {
             }
         }
     }
-    
-    public static String getStackTrace(Throwable t) {
-        String stackTrace = null;
-        try {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            t.printStackTrace(pw);
-            pw.close();
-            sw.close();
-            stackTrace = sw.getBuffer().toString();
-        } catch (Exception ex) {
-        }
-        return stackTrace;
-    }
-    
+
     public void log(String msg) {
-        filterConfig.getServletContext().log(msg);        
+        filterConfig.getServletContext().log(msg);
     }
-    
+
 }

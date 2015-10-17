@@ -5,22 +5,14 @@
  */
 package uk.ac.dundee.computing.aec.instagrim.models;
 
-import com.datastax.driver.core.BoundStatement;
-import com.datastax.driver.core.Cluster;
-import static com.datastax.driver.core.DataType.set;
-import com.datastax.driver.core.PreparedStatement;
-import com.datastax.driver.core.ResultSet;
-import com.datastax.driver.core.Row;
-import com.datastax.driver.core.Session;
+import com.datastax.driver.core.*;
+import uk.ac.dundee.computing.aec.instagrim.lib.AeSimpleSHA1;
+
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Set;
-import java.lang.String;
-import uk.ac.dundee.computing.aec.instagrim.lib.AeSimpleSHA1;
-import uk.ac.dundee.computing.aec.instagrim.stores.Pic;
 
 /**
- *
  * @author Administrator
  */
 public class User {
@@ -91,36 +83,31 @@ public class User {
         return false;
     }
 
-    public void getUserInto(String username)
-    {
+    public void getUserInto(String username) {
         Session session = cluster.connect("instagrim");
-        
+
         PreparedStatement validUser = session.prepare("select * from userprofiles where login=?");
-        
+
         BoundStatement b = new BoundStatement(validUser);
-        
+
         ResultSet rs = session.execute(b);
-        
-        if(rs.isExhausted())
-        {
+
+        if (rs.isExhausted()) {
             System.out.print("Invalid Username");
-        }
-        else
-        {
-            for(Row row : rs)
-            {
+        } else {
+            for (Row row : rs) {
                 String firstName = row.getString("first_name");
                 String lastName = row.getString("last_name");
                 Set<String> email = row.getSet("email", String.class);
             }
-            
+
         }
     }
-    
-    
+
+
     public void setCluster(Cluster cluster) {
         this.cluster = cluster;
     }
 
-    
+
 }

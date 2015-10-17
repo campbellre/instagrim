@@ -6,8 +6,9 @@
 package uk.ac.dundee.computing.aec.instagrim.servlets;
 
 import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.Session;
-import java.io.IOException;
+import uk.ac.dundee.computing.aec.instagrim.lib.CassandraHosts;
+import uk.ac.dundee.computing.aec.instagrim.models.User;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,15 +16,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import uk.ac.dundee.computing.aec.instagrim.lib.CassandraHosts;
-import uk.ac.dundee.computing.aec.instagrim.models.User;
+import java.io.IOException;
 
 /**
- *
  * @author Ryan
  */
 @WebServlet(name = "Profile", urlPatterns = {"/Profile"})
-public class Profile extends HttpServlet{
+public class Profile extends HttpServlet {
 
     Cluster cluster = null;
 
@@ -35,17 +34,16 @@ public class Profile extends HttpServlet{
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            
+
         String username = request.getParameter("username");
-        
+
         User us = new User();
         us.setCluster(cluster);
-        
+
         HttpSession session = request.getSession();
-        System.out.println("Session in servlet "+session);
-        
-        
-        
+        System.out.println("Session in servlet " + session);
+
+
     }
 
     @Override

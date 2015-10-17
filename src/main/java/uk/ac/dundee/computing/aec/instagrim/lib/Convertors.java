@@ -1,24 +1,19 @@
 package uk.ac.dundee.computing.aec.instagrim.lib;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.URLDecoder;
 import java.util.StringTokenizer;
+
 //import java.util.UUID;
-import javax.servlet.http.HttpServletRequest;
-import com.eaio.uuid.UUID;
 
 public final class Convertors {
-    public static int DISPLAY_IMAGE=0;
-    public static int DISPLAY_THUMB=1;
-    public static int DISPLAY_PROCESSED=2;
-    public void Convertors() {
-
-    }
+    public static int DISPLAY_IMAGE = 0;
+    public static int DISPLAY_THUMB = 1;
+    public static int DISPLAY_PROCESSED = 2;
 
     public static java.util.UUID getTimeUUID() {
         return java.util.UUID.fromString(new com.eaio.uuid.UUID().toString());
     }
-    
-    
 
     public static byte[] asByteArray(java.util.UUID uuid) {
 
@@ -66,10 +61,10 @@ public final class Convertors {
             // System.out.print(Integer.toHexString(val)+",");
         }
 
-	  //System.out.println();
+        //System.out.println();
     }
 
-//From: http://www.captain.at/howto-java-convert-binary-data.php
+    //From: http://www.captain.at/howto-java-convert-binary-data.php
     public static long arr2long(byte[] arr, int start) {
         int i = 0;
         int len = 4;
@@ -96,7 +91,8 @@ public final class Convertors {
         //Lets assume the number is the last argument
 
         int argv = 0;
-        while (st.hasMoreTokens()) {;
+        while (st.hasMoreTokens()) {
+            ;
             args[argv] = new String();
             args[argv] = st.nextToken();
             argv++;
@@ -115,10 +111,11 @@ public final class Convertors {
 
         StringTokenizer st = SplitString(type);
         args = new String[st.countTokens()];
-		//Lets assume the number is the last argument
+        //Lets assume the number is the last argument
 
         int argv = 0;
-        while (st.hasMoreTokens()) {;
+        while (st.hasMoreTokens()) {
+            ;
             args[argv] = new String();
 
             args[argv] = st.nextToken();
@@ -132,20 +129,21 @@ public final class Convertors {
             argv++;
         }
 
-	//so now they'll be in the args array.  
+        //so now they'll be in the args array.
         // argv[0] should be the user directory
         return args;
     }
-    
+
     public static String[] SplitRequestPath(HttpServletRequest request) {
         String args[] = null;
 
         StringTokenizer st = SplitString(request.getRequestURI());
         args = new String[st.countTokens()];
-		//Lets assume the number is the last argument
+        //Lets assume the number is the last argument
 
         int argv = 0;
-        while (st.hasMoreTokens()) {;
+        while (st.hasMoreTokens()) {
+            ;
             args[argv] = new String();
 
             args[argv] = st.nextToken();
@@ -159,13 +157,17 @@ public final class Convertors {
             argv++;
         }
 
-	//so now they'll be in the args array.  
+        //so now they'll be in the args array.
         // argv[0] should be the user directory
         return args;
     }
 
     private static StringTokenizer SplitString(String str) {
         return new StringTokenizer(str, "/");
+
+    }
+
+    public void Convertors() {
 
     }
 

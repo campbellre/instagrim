@@ -7,33 +7,37 @@
 package uk.ac.dundee.computing.aec.instagrim.stores;
 
 /**
- *
  * @author Administrator
  */
 public class LoggedIn {
-    boolean logedin=false;
-    String Username=null;
-    public void LogedIn(){
-        
+    boolean logedin = false;
+    String Username = null;
+
+    public void LogedIn() {
+
     }
-    
-    public void setUsername(String name){
-        this.Username=name;
-    }
-    public String getUsername(){
+
+    public String getUsername() {
         return Username;
     }
-    public void setLogedin(){
-        logedin=true;
+
+    public void setUsername(String name) {
+        this.Username = name;
     }
-    public void setLogedout(){
-        logedin=false;
+
+    public void setLogedin() {
+        logedin = true;
     }
-    
-    public void setLoginState(boolean logedin){
-        this.logedin=logedin;
+
+    public void setLogedout() {
+        logedin = false;
     }
-    public boolean getlogedin(){
+
+    public void setLoginState(boolean logedin) {
+        this.logedin = logedin;
+    }
+
+    public boolean getlogedin() {
         return logedin;
     }
 }
