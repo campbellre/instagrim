@@ -10,7 +10,7 @@ import uk.ac.dundee.computing.aec.instagrim.lib.AeSimpleSHA1;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Administrator
@@ -62,7 +62,7 @@ public class User {
         }
         Session session = cluster.connect("instagrim");
         PreparedStatement ps = session.prepare("select password from userprofiles where login =?");
-        ResultSet rs = null;
+        ResultSet rs;
         BoundStatement boundStatement = new BoundStatement(ps);
         rs = session.execute( // this is where the query is executed
                 boundStatement.bind( // here you are binding the 'boundStatement'
@@ -83,27 +83,52 @@ public class User {
         return false;
     }
 
-    public void getUserInto(String username) {
+    public HashMap<String,String> getUserInfo(String username) {
         Session session = cluster.connect("instagrim");
 
         PreparedStatement validUser = session.prepare("select * from userprofiles where login=?");
 
         BoundStatement b = new BoundStatement(validUser);
 
-        ResultSet rs = session.execute(b);
+        ResultSet rs = session.execute(b.bind(username));
+
+        String firstName = "";
+        String lastName = "";
+        Set<String> email = new TreeSet<>();
+
 
         if (rs.isExhausted()) {
             System.out.print("Invalid Username");
+            firstName = "No User";
+            lastName = "No User";
+            if (email != null) {
+                email.add("No User");
+            }
         } else {
             for (Row row : rs) {
-                String firstName = row.getString("first_name");
-                String lastName = row.getString("last_name");
-                Set<String> email = row.getSet("email", String.class);
+                firstName = row.getString("first_name");
+                lastName = row.getString("last_name");
+                email = row.getSet("email", String.class);
             }
-
         }
-    }
 
+        HashMap<String, String> hs = new HashMap<>();
+        hs.put("Username", username);
+        hs.put("FirstName", firstName);
+        hs.put("LastName", lastName);
+
+        int i = 0;
+        if (email == null) {
+            return hs;
+        }
+        for (String eStr : email) {
+            hs.put(("Email" + String.valueOf(i)), eStr);
+            i++;
+        }
+
+        return hs;
+
+    }
 
     public void setCluster(Cluster cluster) {
         this.cluster = cluster;

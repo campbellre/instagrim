@@ -42,7 +42,7 @@ public final class CassandraHosts {
         int i = 0;
         while (it.hasNext()) {
             Host ch = it.next();
-            sHosts[i] = (String) ch.getAddress().toString();
+            sHosts[i] = ch.getAddress().toString();
 
             System.out.println("Hosts" + ch.getAddress().toString());
             i++;
