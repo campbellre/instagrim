@@ -99,16 +99,26 @@ public class User {
 
         if (rs.isExhausted()) {
             System.out.print("Invalid Username");
-            firstName = "No User";
-            lastName = "No User";
-            if (email != null) {
-                email.add("No User");
-            }
         } else {
             for (Row row : rs) {
-                firstName = row.getString("first_name");
-                lastName = row.getString("last_name");
-                email = row.getSet("email", String.class);
+                if (row.isNull("first_name")) {
+                    firstName = "";
+                }
+                else {
+                    firstName = row.getString("first_name");
+                }
+                if(row.isNull("last_name")) {
+                    lastName = "";
+                }
+                else {
+                    lastName = row.getString("last_name");
+                }
+                if(row.isNull("email")) {
+                    email.add("");
+                }
+                else {
+                    email = row.getSet("email", String.class);
+                }
             }
         }
 
