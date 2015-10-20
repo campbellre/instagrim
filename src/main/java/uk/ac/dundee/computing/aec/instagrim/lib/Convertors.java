@@ -92,7 +92,6 @@ public final class Convertors {
 
         int argv = 0;
         while (st.hasMoreTokens()) {
-            ;
             args[argv] = new String();
             args[argv] = st.nextToken();
             argv++;
@@ -115,7 +114,6 @@ public final class Convertors {
 
         int argv = 0;
         while (st.hasMoreTokens()) {
-            ;
             args[argv] = new String();
 
             args[argv] = st.nextToken();
@@ -143,7 +141,6 @@ public final class Convertors {
 
         int argv = 0;
         while (st.hasMoreTokens()) {
-            ;
             args[argv] = new String();
 
             args[argv] = st.nextToken();

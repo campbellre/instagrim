@@ -119,9 +119,18 @@ public class ProtectPages implements Filter {
         System.out.println("Doing filter");
         HttpServletRequest httpReq = (HttpServletRequest) request;
         HttpSession session = httpReq.getSession(false);
+        // Check the session
+        if(!((HttpServletRequest) request).isRequestedSessionIdValid()){
+            RequestDispatcher r = request.getRequestDispatcher("/error.jsp");
+            request.setAttribute("Error", true);
+            request.setAttribute("Message", "Invalid Session");
+            r.forward(request,response);
+        }
+
+
         LoggedIn li = (LoggedIn) session.getAttribute("LoggedIn");
         System.out.println("Session in filter " + session);
-        if ((li == null) || (li.getlogedin() == false)) {
+        if ((li == null) || (!li.getlogedin())) {
             System.out.println("Foward to login");
             RequestDispatcher rd = request.getRequestDispatcher("/login.jsp");
             rd.forward(request, response);

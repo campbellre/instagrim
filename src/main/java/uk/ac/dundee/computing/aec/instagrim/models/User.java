@@ -8,6 +8,7 @@ package uk.ac.dundee.computing.aec.instagrim.models;
 import com.datastax.driver.core.*;
 import uk.ac.dundee.computing.aec.instagrim.lib.AeSimpleSHA1;
 
+import javax.management.modelmbean.RequiredModelMBean;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
@@ -92,6 +93,7 @@ public class User {
 
         ResultSet rs = session.execute(b.bind(username));
 
+        String pUser = "";
         String firstName = "";
         String lastName = "";
         Set<String> email = new TreeSet<>();
@@ -101,6 +103,12 @@ public class User {
             System.out.print("Invalid Username");
         } else {
             for (Row row : rs) {
+                if(row.isNull("login")){
+                    pUser = "";
+                }
+                else {
+                    pUser = row.getString("login");
+                }
                 if (row.isNull("first_name")) {
                     firstName = "";
                 }
@@ -123,7 +131,7 @@ public class User {
         }
 
         HashMap<String, String> hs = new HashMap<>();
-        hs.put("Username", username);
+        hs.put("UserPath", pUser);
         hs.put("FirstName", firstName);
         hs.put("LastName", lastName);
 
