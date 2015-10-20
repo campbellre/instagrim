@@ -22,46 +22,50 @@
     <ul>
         <li><a href="upload.jsp">Upload</a></li>
         <li><a href="Logout.jsp">Logout</a></li>
-    </ul>
-</nav>
-
-<%
+            <%
     LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");
     if (lg != null) {
         if (lg.getlogedin()) {
-            String user = (String) request.getAttribute("User");
+            String user = (String) request.getAttribute("Userpath");
 
             if (user == null) {
+            // This is sending to /instagrim/profile/index.jsp
                 response.sendRedirect("index.jsp");
             }
             else{
+                if(lg.getUsername() == request.getAttribute("Userpath")){
                 %>
 
-
-<ul>
-    <li>Username: <%=request.getAttribute("User").toString()%></li>
-    <li>First Name: <%=request.getAttribute("Firstname").toString()%></li>
-    <li>Last Name: <%=request.getAttribute("Lastname").toString()%></li>
-    <li>Email: <%=request.getAttribute("Email").toString()%></li>
-</ul>
-
-
-<%
+                    <div class="Edit">
+                         <a href="ProfileEdit.jsp">Edit Profile</a>
+                    </div>
+                <%
+                }
+                %>
+                <ul>
+                    <li>Username: <%=request.getAttribute("Userpath").toString()%>
+                    </li>
+                    <li>First Name: <%=request.getAttribute("Firstname").toString()%>
+                    </li>
+                    <li>Last Name: <%=request.getAttribute("Lastname").toString()%>
+                    </li>
+                    <li>Email: <%=request.getAttribute("Email").toString()%>
+                    </li>
+                </ul>
+            <%
             }
-
-%>
-
-<%
+            %>
+            <%
         } else {
             response.sendRedirect("index.jsp");
         }
     }
     else{
-            %>
-<p>Error</p>
-<%
-        }
-%>
+    %>
+        <p>Error</p>
+    <%
+    }
+    %>
 
 
 </body>

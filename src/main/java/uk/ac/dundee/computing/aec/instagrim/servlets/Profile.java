@@ -47,7 +47,9 @@ public class Profile extends HttpServlet {
         // The request contains the URL
         String[] requestPath = Convertors.SplitRequestPath(request);
 
-        displayInfo(requestPath[2],request,response);
+        displayInfo(requestPath[2], request, response);
+
+
 
         HttpSession session = request.getSession();
         System.out.println("Session in servlet " + session);
@@ -62,10 +64,12 @@ public class Profile extends HttpServlet {
         HashMap<String, String> hm = u.getUserInfo(User);
         RequestDispatcher rd = request.getRequestDispatcher("/Profile.jsp");
         // There is also a getAttributeNames function that may be useful
-        request.setAttribute("User", hm.get("Username"));
+        User = User.replaceAll("\\s+", "");
+
+        request.setAttribute("Userpath", hm.get("UserPath"));
         request.setAttribute("Firstname", hm.get("FirstName"));
         request.setAttribute("Lastname", hm.get("LastName"));
-        if(hm.containsKey("Email0") == true) {
+        if(hm.containsKey("Email0")) {
             request.setAttribute("Email", hm.get("Email0"));
         }
         else{
