@@ -78,6 +78,11 @@ public class Profile extends HttpServlet {
         rd.forward(request,response);
     }
 
+    private void editDetails(String firstname, String lastname, String email)
+    {
+
+    }
+
     @Override
     public String getServletInfo() {
         return "Short description";
