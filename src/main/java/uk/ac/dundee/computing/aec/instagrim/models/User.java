@@ -6,7 +6,10 @@
 package uk.ac.dundee.computing.aec.instagrim.models;
 
 import com.datastax.driver.core.*;
+import com.datastax.driver.core.Row;
+import com.sun.rowset.internal.*;
 import uk.ac.dundee.computing.aec.instagrim.lib.AeSimpleSHA1;
+import uk.ac.dundee.computing.aec.instagrim.stores.UserDetails;
 
 import javax.management.modelmbean.RequiredModelMBean;
 import java.io.UnsupportedEncodingException;
@@ -84,7 +87,7 @@ public class User {
         return false;
     }
 
-    public HashMap<String,String> getUserInfo(String username) {
+    public UserDetails getUserInfo(String username) {
         Session session = cluster.connect("instagrim");
 
         PreparedStatement validUser = session.prepare("select * from userprofiles where login=?");
@@ -93,70 +96,42 @@ public class User {
 
         ResultSet rs = session.execute(b.bind(username));
 
-        String pUser = "";
-        String firstName = "";
-        String lastName = "";
-        Set<String> email = new TreeSet<>();
-
+        UserDetails returnUser = new UserDetails();
 
         if (rs.isExhausted()) {
             System.out.print("Invalid Username");
         } else {
             for (Row row : rs) {
                 if(row.isNull("login")){
-                    pUser = "";
+                    returnUser.setLogin("");
                 }
                 else {
-                    pUser = row.getString("login");
+                    returnUser.setLogin(row.getString("login"));
                 }
                 if (row.isNull("first_name")) {
-                    firstName = "";
+                    returnUser.setFirstname("");
                 }
                 else {
-                    firstName = row.getString("first_name");
+                    returnUser.setFirstname(row.getString("first_name"));
                 }
                 if(row.isNull("last_name")) {
-                    lastName = "";
+                    returnUser.setLastname("");
                 }
                 else {
-                    lastName = row.getString("last_name");
+                    returnUser.setLastname(row.getString("last_name"));
                 }
                 if(row.isNull("email")) {
-                    email.add("");
+                    returnUser.addEmail("");
                 }
                 else {
-                    email = row.getSet("email", String.class);
+                    for (Object email : row.getSet(("email"),Set.class)) {
+                        returnUser.addEmail((String) email);
+                    }
                 }
             }
         }
 
-        HashMap<String, String> hs = new HashMap<>();
-        hs.put("UserPath", pUser);
-        hs.put("FirstName", firstName);
-        hs.put("LastName", lastName);
-
-        int i = 0;
-        if (email == null) {
-            return hs;
-        }
-        for (String eStr : email) {
-            hs.put(("Email" + String.valueOf(i)), eStr);
-            i++;
-        }
-
-        return hs;
-
-    }
-
-    public void setUserDetils(String user, String firstname, String lastname, String email)
-    {
-        Session session = cluster.connect("instagrim");
-
-        PreparedStatement ps = session.prepare("UPDATE userprofiles SET first_name = ?, last_name = ?, email = {?} WHERE login = ?");
-
-        BoundStatement b = new BoundStatement(ps);
-
-        ResultSet rows = session.execute(b.bind(firstname, lastname, email, user));
+        return returnUser;
 
     }
 
@@ -166,4 +141,14 @@ public class User {
     }
 
 
+    public void setUserDetails(UserDetails ud) {
+        Session session = cluster.connect("instagrim");
+
+        PreparedStatement ps = session.prepare("UPDATE userprofiles SET first_name = ?, last_name = ?, email = ? WHERE login = ?");
+
+        BoundStatement b = new BoundStatement(ps);
+
+        session.execute(b.bind(ud.getFirstname(),ud.getLastname(),ud.getEmail(),ud.getLogin()));
+
+    }
 }

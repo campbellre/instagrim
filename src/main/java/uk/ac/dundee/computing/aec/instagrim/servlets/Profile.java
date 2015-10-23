@@ -9,8 +9,9 @@ import com.datastax.driver.core.Cluster;
 import uk.ac.dundee.computing.aec.instagrim.lib.CassandraHosts;
 import uk.ac.dundee.computing.aec.instagrim.lib.Convertors;
 import uk.ac.dundee.computing.aec.instagrim.models.User;
+import uk.ac.dundee.computing.aec.instagrim.stores.LoggedIn;
+import uk.ac.dundee.computing.aec.instagrim.stores.UserDetails;
 
-import javax.management.modelmbean.RequiredModelMBean;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -26,14 +27,15 @@ import java.util.HashMap;
 /**
  * @author Ryan
  */
+
 @WebServlet(name = "Profile", urlPatterns = {
         "/Profile",
         "/Profile/*"
 })
+
 public class Profile extends HttpServlet {
 
     private Cluster cluster = null;
-    private HashMap CommandsMap = new HashMap();
 
     public void init(ServletConfig config) throws ServletException {
         // TODO Auto-generated method stub
@@ -57,31 +59,24 @@ public class Profile extends HttpServlet {
 
     }
 
-    private void displayInfo(String User, HttpServletRequest request, HttpServletResponse response)
+    private void displayInfo(String sUser, HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
         User u = new User();
         u.setCluster(cluster);
-        HashMap<String, String> hm = u.getUserInfo(User);
+        sUser = sUser.replaceAll("\\s+", "");
+        UserDetails ud = u.getUserInfo(sUser);
         RequestDispatcher rd = request.getRequestDispatcher("/Profile.jsp");
         // There is also a getAttributeNames function that may be useful
-        User = User.replaceAll("\\s+", "");
 
-        request.setAttribute("Userpath", hm.get("UserPath"));
-        request.setAttribute("Firstname", hm.get("FirstName"));
-        request.setAttribute("Lastname", hm.get("LastName"));
-        if(hm.containsKey("Email0")) {
-            request.setAttribute("Email", hm.get("Email0"));
-        }
-        else{
-            request.setAttribute("Email","No Value");
-        }
+
+        request.setAttribute("Userpath", sUser);
+        request.setAttribute("Firstname", ud.getFirstname());
+        request.setAttribute("Lastname", ud.getLastname());
+        request.setAttribute("Email", ud.getEmail());
+
         rd.forward(request,response);
     }
 
-    private void editDetails(String firstname, String lastname, String email)
-    {
-
-    }
 
     @Override
     public String getServletInfo() {

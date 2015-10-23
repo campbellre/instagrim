@@ -10,7 +10,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" type="text/css" href="Styles.css"/>
-    <title>JSP Page</title>
+    <title>Profile</title>
     <style type="text/css">
         p {
             color: red;
@@ -21,7 +21,9 @@
 <nav>
     <ul>
         <li><a href="upload.jsp">Upload</a></li>
-        <li><a href="Logout.jsp">Logout</a></li>
+        <li><a href="logout.jsp">Logout</a></li>
+    </ul>
+</nav>
             <%
     LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");
     if (lg != null) {
@@ -33,25 +35,27 @@
                 response.sendRedirect("index.jsp");
             }
             else{
-                if(lg.getUsername() == request.getAttribute("Userpath")){
+                System.out.println("userpath: " + request.getAttribute("Userpath"));
+                System.out.println("username: " + lg.getUsername());
+                if(lg.getUsername().equals(request.getAttribute("Userpath").toString())) {
                 %>
 
-                    <div class="Edit">
-                         <a href="ProfileEdit.jsp">Edit Profile</a>
-                    </div>
-                <%
+             <div class="Edit">
+                 <a href="/Instagrim/ProfileEdit/<%=lg.getUsername()%>">Edit Profile</a>
+             </div>
+            <%
                 }
                 %>
-                <ul>
-                    <li>Username: <%=request.getAttribute("Userpath").toString()%>
-                    </li>
-                    <li>First Name: <%=request.getAttribute("Firstname").toString()%>
-                    </li>
-                    <li>Last Name: <%=request.getAttribute("Lastname").toString()%>
-                    </li>
-                    <li>Email: <%=request.getAttribute("Email").toString()%>
-                    </li>
-                </ul>
+        <ul>
+            <li>Username: <%=request.getAttribute("Userpath").toString()%>
+            </li>
+            <li>First Name: <%=request.getAttribute("Firstname").toString()%>
+            </li>
+            <li>Last Name: <%=request.getAttribute("Lastname").toString()%>
+            </li>
+            <li>Email: <%=request.getAttribute("Email").toString()%>
+            </li>
+        </ul>
             <%
             }
             %>
@@ -63,7 +67,7 @@
     else{
     %>
         <p>Error</p>
-    <%
+            <%
     }
     %>
 
