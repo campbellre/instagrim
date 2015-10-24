@@ -7,14 +7,11 @@ package uk.ac.dundee.computing.aec.instagrim.models;
 
 import com.datastax.driver.core.*;
 import com.datastax.driver.core.Row;
-import com.sun.rowset.internal.*;
 import uk.ac.dundee.computing.aec.instagrim.lib.AeSimpleSHA1;
 import uk.ac.dundee.computing.aec.instagrim.stores.UserDetails;
 
-import javax.management.modelmbean.RequiredModelMBean;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
 
 /**
  * @author Administrator
@@ -119,6 +116,15 @@ public class User {
                 }
                 else {
                     returnUser.setLastname(row.getString("last_name"));
+                }
+                if(row.isNull("profile_pic"))
+                {
+                    // This should work by showing default.
+                    // Should be set in the store (UserDetails).
+                }
+                else
+                {
+                    returnUser.setProfilepicUUID(row.getUUID("profile_pic"));
                 }
                 if(row.isNull("email")) {
                     returnUser.addEmail("");

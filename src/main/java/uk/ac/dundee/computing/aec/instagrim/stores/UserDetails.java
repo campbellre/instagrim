@@ -1,6 +1,9 @@
 package uk.ac.dundee.computing.aec.instagrim.stores;
 
+import uk.ac.dundee.computing.aec.instagrim.lib.Default;
+
 import java.util.TreeSet;
+import java.util.UUID;
 
 /**
  * Created by Ryan on 23/10/2015.
@@ -14,6 +17,17 @@ public class UserDetails {
     private String lastname;
     private TreeSet<String> email;
     private String password;
+    private Pic profilepicuuid;
+
+    public String getProfilepicUUID()
+    {
+        return profilepicuuid.getSUUID();
+    }
+
+    public void setProfilepicUUID(UUID uuid) {
+        this.profilepicuuid.setUUID(uuid);
+    }
+
 
     public String getPassword() {
         return password;
@@ -65,15 +79,14 @@ public class UserDetails {
         return this.email.first();
     }
 
-    public UserDetails() {
-        this.email = new TreeSet<>();
-    }
-
     public void emailClear() {
         this.email.clear();
     }
 
-    public boolean getProfilePic() {
-        return false;
+
+    public UserDetails() {
+        this.email = new TreeSet<>();
+        this.profilepicuuid = new Pic();
+        this.profilepicuuid.setUUID(Default.USER_PROFILE_PIC);
     }
 }

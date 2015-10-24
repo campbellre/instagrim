@@ -52,6 +52,8 @@
                 }
                 %>
 
+                <img src="/Instagrim/Image/<%=ud.getProfilepicUUID()%>" />
+
                 <ul>
                     <li>Username: <%=user%>
                     </li>
