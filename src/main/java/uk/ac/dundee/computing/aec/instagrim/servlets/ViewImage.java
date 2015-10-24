@@ -25,7 +25,6 @@ public class ViewImage extends HttpServlet {
     Cluster cluster = null;
 
     public void init(ServletConfig config) throws ServletException {
-        // TODO Auto-generated method stub
         cluster = CassandraHosts.getCluster();
     }
 
