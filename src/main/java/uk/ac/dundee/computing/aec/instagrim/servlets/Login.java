@@ -53,7 +53,7 @@ public class Login extends HttpServlet {
 
         Validate notEmpty = new Validate();
 
-        if (!notEmpty.validCred(username, password)) {
+        if (!notEmpty.validLogin(username, password)) {
             response.sendRedirect("/Instagrim/login.jsp");
         } else {
 

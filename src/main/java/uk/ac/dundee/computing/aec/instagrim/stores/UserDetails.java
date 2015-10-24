@@ -16,6 +16,17 @@ public class UserDetails {
     private String lastname;
     private TreeSet<String> email;
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    private String password;
+
+
     public String getLogin() {
         return login;
     }
@@ -51,10 +62,7 @@ public class UserDetails {
 
     public void addEmail(String email)
     {
-        if(!this.email.contains(email))
-        {
-            this.email.add(email);
-        }
+        this.email.add(email);
     }
 
     public String getFirstEmail(){

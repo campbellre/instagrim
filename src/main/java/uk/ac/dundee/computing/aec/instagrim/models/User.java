@@ -153,4 +153,25 @@ public class User {
         session.execute(b.bind(ud.getFirstname(),ud.getLastname(),ud.getEmail(),ud.getLogin()));
 
     }
+
+    public void registerAddUser(UserDetails ud)
+    {
+        /*
+        First call the register user function
+        with the login and password from the
+        UserDetails object.
+        */
+        // Use the returned bool from register to ensure
+        // The user has been created before messing around
+        // with their details.
+        if(RegisterUser(ud.getLogin(),ud.getPassword())) {
+            /*
+            Then call the setUserDetails for simplicity
+            At the moment. :(
+            */
+            setUserDetails(ud);
+        }
+
+    }
+
 }

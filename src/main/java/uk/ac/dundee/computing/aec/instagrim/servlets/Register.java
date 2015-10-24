@@ -10,6 +10,7 @@ import com.datastax.driver.core.Cluster;
 import uk.ac.dundee.computing.aec.instagrim.lib.CassandraHosts;
 import uk.ac.dundee.computing.aec.instagrim.lib.Validate;
 import uk.ac.dundee.computing.aec.instagrim.models.User;
+import uk.ac.dundee.computing.aec.instagrim.stores.UserDetails;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -43,16 +44,23 @@ public class Register extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+
+        UserDetails ud = new UserDetails();
+
+        ud.setLogin(request.getParameter("username"));
+        ud.setPassword(request.getParameter("password"));
+        ud.setFirstname(request.getParameter("firstname"));
+        ud.setLastname(request.getParameter("lastname"));
+        ud.addEmail(request.getParameter("email"));
+
 
         Validate notEmpty = new Validate();
-        if (!notEmpty.validCred(username, password)) {
+        if (!notEmpty.validCred(ud)) {
             response.sendRedirect("/Instagrim/register.jsp");
         } else {
             User us = new User();
             us.setCluster(cluster);
-            us.RegisterUser(username, password);
+            us.registerAddUser(ud);
 
             response.sendRedirect("/Instagrim");
 
