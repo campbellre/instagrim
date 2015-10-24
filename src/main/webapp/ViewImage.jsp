@@ -10,5 +10,12 @@
 </head>
 <body>
     <img src="/Instagrim/Image/<%=request.getAttribute("image_url")%>" />
+
+    <form  method="POST" action="Comment">
+        <textarea name="CommentBody" placeholder="Enter a Comment..."></textarea>
+        <br />
+        <input type="submit" value="Save" />
+    </form>
+
 </body>
 </html>
