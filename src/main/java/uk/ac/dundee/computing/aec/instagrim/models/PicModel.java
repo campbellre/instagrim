@@ -231,7 +231,7 @@ public class PicModel {
 
             output.write(b);
             byte[] thumbb = picresize(picid.toString(), types[1]);
-
+            // Go to 'picresize' function on a "NULL POINTER EXCEPTION".
             int thumblength = thumbb.length;
             ByteBuffer thumbbuf = ByteBuffer.wrap(thumbb);
             byte[] processedb = picdecolour(picid.toString(), types[1]);
