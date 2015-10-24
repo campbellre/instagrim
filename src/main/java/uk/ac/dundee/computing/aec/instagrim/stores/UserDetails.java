@@ -1,7 +1,8 @@
 package uk.ac.dundee.computing.aec.instagrim.stores;
 
 import javax.servlet.annotation.WebServlet;
-import java.util.TreeSet;
+import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * Created by Ryan on 23/10/2015.
@@ -13,7 +14,7 @@ public class UserDetails {
     private String login;
     private String firstname;
     private String lastname;
-    private TreeSet<String> email;
+    private String email;
 
     public String getLogin() {
         return login;
@@ -39,19 +40,15 @@ public class UserDetails {
         this.lastname = lastname;
     }
 
-    public TreeSet<String> getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(TreeSet<String> email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public void addEmail(String email) {
-        this.email.add(email);
-    }
-
-    public void UserDetails() {}
+    public UserDetails() { }
 
 
 }

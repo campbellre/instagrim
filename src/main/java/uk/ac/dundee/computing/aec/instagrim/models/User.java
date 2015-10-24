@@ -121,12 +121,10 @@ public class User {
                     returnUser.setLastname(row.getString("last_name"));
                 }
                 if(row.isNull("email")) {
-                    returnUser.addEmail("");
+                    returnUser.setEmail("");
                 }
                 else {
-                    for (Object email : row.getSet(("email"),Set.class)) {
-                        returnUser.addEmail((String) email);
-                    }
+                    returnUser.setEmail(row.getString("email"));
                 }
             }
         }
@@ -150,5 +148,6 @@ public class User {
 
         session.execute(b.bind(ud.getFirstname(),ud.getLastname(),ud.getEmail(),ud.getLogin()));
 
+        return;
     }
 }

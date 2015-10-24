@@ -42,10 +42,16 @@ public class ProfileEdit extends HttpServlet{
         throws ServletException, IOException
     {
         // get the infomation to populate the populate the page with
+        displayInfo(request, response);
 
+    }
+
+    private void displayInfo(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException
+    {
         User u = new User();
         u.setCluster(cluster);
-        
+
         HttpSession session = request.getSession();
         UserDetails ud;
 
@@ -53,7 +59,7 @@ public class ProfileEdit extends HttpServlet{
 
         session.setAttribute("UserDetails",ud);
 
-        RequestDispatcher rd = request.getRequestDispatcher("ProfileEdit.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/ProfileEdit.jsp");
         rd.forward(request,response);
     }
 
@@ -65,18 +71,20 @@ public class ProfileEdit extends HttpServlet{
 
         HttpSession session = request.getSession();
 
-        ud.setLogin(((LoggedIn) session.getAttribute("LoggedIn")).getUsername());
-        ud.setFirstname((String) request.getAttribute("firstname"));
-        ud.setLastname((String) request.getAttribute("lastname"));
-        ud.setEmail((TreeSet<String>) request.getAttribute("email"));
+        String username = ((LoggedIn) session.getAttribute("LoggedIn")).getUsername();
+
+        ud.setLogin(username);
+        ud.setFirstname((String) request.getParameter("firstname"));
+        ud.setLastname((String) request.getParameter("lastname"));
+        ud.setEmail((String) request.getParameter("email"));
+
 
         User u = new User();
         u.setCluster(cluster);
 
         u.setUserDetails(ud);
 
-        RequestDispatcher rd = request.getRequestDispatcher("/EditProfile.jsp");
-        rd.forward(request,response);
+        response.sendRedirect("/Instagrim/Profile/"+ username);
 
     }
 

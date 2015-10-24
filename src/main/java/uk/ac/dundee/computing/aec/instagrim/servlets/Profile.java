@@ -64,17 +64,15 @@ public class Profile extends HttpServlet {
         User u = new User();
         u.setCluster(cluster);
         sUser = sUser.replaceAll("\\s+", "");
+        HttpSession session = request.getSession();
         UserDetails ud = u.getUserInfo(sUser);
+
         RequestDispatcher rd = request.getRequestDispatcher("/Profile.jsp");
         // There is also a getAttributeNames function that may be useful
+        session.setAttribute("UserPath",sUser);
+        session.setAttribute("UserDetails",ud);
 
-
-        request.setAttribute("Userpath", sUser);
-        request.setAttribute("Firstname", ud.getFirstname());
-        request.setAttribute("Lastname", ud.getLastname());
-        request.setAttribute("Email", ud.getEmail());
-
-        rd.forward(request,response);
+        rd.forward(request, response);
     }
 
 
