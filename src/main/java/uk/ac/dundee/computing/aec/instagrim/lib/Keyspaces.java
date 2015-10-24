@@ -22,7 +22,7 @@ public final class Keyspaces {
                     + " processed blob,"
                     + " imagelength int,"
                     + " thumblength int,"
-                    + "  processedlength int,"
+                    + " processedlength int,"
                     + " type  varchar,"
                     + " name  varchar,"
                     + " PRIMARY KEY (picid)"
@@ -44,15 +44,17 @@ public final class Keyspaces {
                     + "      first_name text,\n"
                     + "      last_name text,\n"
                     + "      email set<text>,\n"
-                    + "      addresses  map<text, frozen <address>>\n"
-                    + "      profile_pic UUID\n"
+                    + "      addresses  map<text, frozen <address>>,\n"
+                    + "      profile_pic UUID \n"
                     + "  );";
-            String CreatePicComments = "CREATE TABLE instagrim.piccomments (\n" +
+            String CreatePicComments = "CREATE TABLE if not exists instagrim.piccomments (\n" +
                     "    user text,\n" +
                     "    picid uuid,\n" +
+                    "    time timestamp,\n" +
                     "    comment text,\n" +
-                    "    PRIMARY KEY (user, picid)\n" +
-                    ");";
+                    "    PRIMARY KEY (user, picid, time)\n" +
+                    ")  WITH CLUSTERING ORDER BY (picid DESC, time DESC);";
+            String CreatePicCommentsIndex = "CREATE INDEX ON instagrim.piccomments (picid) ;";
             Session session = c.connect();
             try {
                 PreparedStatement statement = session
@@ -97,8 +99,24 @@ public final class Keyspaces {
             } catch (Exception et) {
                 System.out.println("Can't create Address Profile " + et);
             }
+            System.out.println("" + CreatePicComments);
+            try {
+                SimpleStatement cqlQeury = new SimpleStatement(CreatePicComments);
+                session.execute(cqlQeury);
+            }
+            catch(Exception et)
+            {
+                System.out.print("Can't create comments table "+ et);
+            }
+            try{
+                SimpleStatement cqlQuery = new SimpleStatement(CreatePicCommentsIndex);
+                session.execute(cqlQuery);
+            }
+            catch (Exception et)
+            {
+                System.out.print("Can't create index on comments table " + et);
+            }
             session.close();
-
         } catch (Exception et) {
             System.out.println("Other keyspace or coulm definition error" + et);
         }
