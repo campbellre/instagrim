@@ -47,6 +47,12 @@ public final class Keyspaces {
                     + "      addresses  map<text, frozen <address>>\n"
                     + "      profile_pic UUID\n"
                     + "  );";
+            String CreatePicComments = "CREATE TABLE instagrim.piccomments (\n" +
+                    "    user text,\n" +
+                    "    picid uuid,\n" +
+                    "    comment text,\n" +
+                    "    PRIMARY KEY (user, picid)\n" +
+                    ");";
             Session session = c.connect();
             try {
                 PreparedStatement statement = session
