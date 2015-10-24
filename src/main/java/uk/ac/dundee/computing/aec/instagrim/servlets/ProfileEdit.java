@@ -74,9 +74,9 @@ public class ProfileEdit extends HttpServlet{
         String username = ((LoggedIn) session.getAttribute("LoggedIn")).getUsername();
 
         ud.setLogin(username);
-        ud.setFirstname((String) request.getParameter("firstname"));
-        ud.setLastname((String) request.getParameter("lastname"));
-        ud.setEmail((String) request.getParameter("email"));
+        ud.setFirstname(request.getParameter("firstname"));
+        ud.setLastname(request.getParameter("lastname"));
+        ud.addEmail(request.getParameter("email"));
 
 
         User u = new User();

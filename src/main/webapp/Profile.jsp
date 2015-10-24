@@ -22,7 +22,7 @@
 <nav>
     <ul>
         <li><a href="upload.jsp">Upload</a></li>
-        <li><a href="logout.jsp">Logout</a></li>
+        <li><a href="/Instagrim/logout.jsp">Logout</a></li>
     </ul>
 </nav>
     <%
@@ -58,7 +58,7 @@
                     </li>
                     <li>Last Name: <%=ud != null ? ud.getLastname() : ""%>
                     </li>
-                    <li>Email: <%=ud != null ? ud.getEmail() : ""%>
+                    <li>Email: <%=ud != null ? ud.getFirstEmail() : ""%>
                     </li>
                 </ul>
             <%

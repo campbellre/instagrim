@@ -30,7 +30,7 @@
             <ul>
                 <li>First Name: <input type="text" name="firstname" value=<%=ud.getFirstname()%>></li>
                 <li>Last Name: <input type="text" name="lastname" value=<%=ud.getLastname()%>></li>
-                <li>Email: <input type="text" name="email" value="<%=ud.getEmail()%>"></li>
+                <li>Email: <input type="text" name="email" value="<%=ud.getFirstEmail()%>"></li>
             </ul>
             <br/>
             <input type="submit" value="Save">
