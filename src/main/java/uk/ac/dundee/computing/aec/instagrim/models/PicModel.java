@@ -15,6 +15,7 @@ package uk.ac.dundee.computing.aec.instagrim.models;
 
 import com.datastax.driver.core.*;
 import org.imgscalr.Scalr.*;
+import sun.util.resources.cldr.lag.CurrencyNames_lag;
 import uk.ac.dundee.computing.aec.instagrim.lib.Convertors;
 import uk.ac.dundee.computing.aec.instagrim.stores.Pic;
 
@@ -91,12 +92,20 @@ public class PicModel {
         }
     }
 
+
+    // NOTE: Ensure that you have write permissions to the ******* tomcat temp dir
+    // This can be found in your apache tom cat folder with the name "temp"
+    // and can be set though temp > properties > security > users > write.
+    // If you have changed the folder be sure that you have write permissions
+    // there as well.
     public byte[] picresize(String picid, String type) {
         try {
             BufferedImage BI = ImageIO.read(new File("/var/tmp/instagrim/" + picid));
             BufferedImage thumbnail = createThumbnail(BI);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
             ImageIO.write(thumbnail, type, baos);
+            
             baos.flush();
 
             byte[] imageInByte = baos.toByteArray();
@@ -203,6 +212,51 @@ public class PicModel {
 
         return p;
 
+    }
+
+
+    public void InsertProfilePic(byte[] b, String type, String name, String user)
+    {
+        try {
+            Convertors convertor = new Convertors();
+
+            String types[] = Convertors.SplitFiletype(type);
+            ByteBuffer buffer = ByteBuffer.wrap(b);
+            int length = b.length;
+            java.util.UUID picid = convertor.getTimeUUID();
+
+            //The following is a quick and dirty way of doing this, will fill the disk quickly !
+            Boolean success = (new File("/var/tmp/instagrim/")).mkdirs();
+            FileOutputStream output = new FileOutputStream(new File("/var/tmp/instagrim/" + picid));
+
+            output.write(b);
+            byte[] thumbb = picresize(picid.toString(), types[1]);
+
+            int thumblength = thumbb.length;
+            ByteBuffer thumbbuf = ByteBuffer.wrap(thumbb);
+            byte[] processedb = picdecolour(picid.toString(), types[1]);
+            ByteBuffer processedbuf = ByteBuffer.wrap(processedb);
+            int processedlength = processedb.length;
+            Session session = cluster.connect("instagrim");
+
+            PreparedStatement psInsertPic = session.prepare(
+                    "insert into pics " +
+                    "( picid, image,thumb,processed, user, interaction_time,imagelength,thumblength,processedlength,type,name)" +
+                    " values(?,?,?,?,?,?,?,?,?,?,?)");
+            PreparedStatement psInsertPicToUser = session.prepare(
+                    "update userprofiles set profile_pic = ? where login = ?")
+                    ;
+            BoundStatement bsInsertPic = new BoundStatement(psInsertPic);
+            BoundStatement bsInsertPicToUser = new BoundStatement(psInsertPicToUser);
+
+            Date DateAdded = new Date();
+            session.execute(bsInsertPic.bind(picid, buffer, thumbbuf, processedbuf, user, DateAdded, length, thumblength, processedlength, type, name));
+            session.execute(bsInsertPicToUser.bind(picid, user));
+            session.close();
+
+        } catch (IOException ex) {
+            System.out.println("Error --> " + ex);
+        }
     }
 
 }

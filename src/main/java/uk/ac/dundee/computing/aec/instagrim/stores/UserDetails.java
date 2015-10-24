@@ -1,7 +1,5 @@
 package uk.ac.dundee.computing.aec.instagrim.stores;
 
-import java.util.Collection;
-import java.util.Set;
 import java.util.TreeSet;
 
 /**
@@ -15,6 +13,7 @@ public class UserDetails {
     private String firstname;
     private String lastname;
     private TreeSet<String> email;
+    private String password;
 
     public String getPassword() {
         return password;
@@ -23,9 +22,6 @@ public class UserDetails {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    private String password;
-
 
     public String getLogin() {
         return login;
@@ -69,13 +65,15 @@ public class UserDetails {
         return this.email.first();
     }
 
-
     public UserDetails() {
         this.email = new TreeSet<>();
     }
 
-
     public void emailClear() {
         this.email.clear();
+    }
+
+    public boolean getProfilePic() {
+        return false;
     }
 }

@@ -36,6 +36,9 @@
             <input type="submit" value="Save">
         </form>
     </div>
+
+    <a href="/Instagrim/UploadProfilePic.jsp">Upload a Profile Picture</a>
+
     <%
             }
             else{
