@@ -2,6 +2,7 @@ package uk.ac.dundee.computing.aec.instagrim.servlets;
 
 import com.datastax.driver.core.Cluster;
 import uk.ac.dundee.computing.aec.instagrim.lib.CassandraHosts;
+import uk.ac.dundee.computing.aec.instagrim.lib.Default;
 import uk.ac.dundee.computing.aec.instagrim.models.PicModel;
 import uk.ac.dundee.computing.aec.instagrim.stores.LoggedIn;
 
@@ -35,6 +36,14 @@ public class UploadProfilePic extends HttpServlet{
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");;
+        if (lg == null) {
+            response.sendRedirect(Default.URL_ROOT);
+        }
+
+        String username = lg.getUsername();
+
         for (Part part : request.getParts()) {
             System.out.println("Part Name " + part.getName());
 
@@ -43,12 +52,7 @@ public class UploadProfilePic extends HttpServlet{
 
             InputStream is = request.getPart(part.getName()).getInputStream();
             int i = is.available();
-            HttpSession session = request.getSession();
-            LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");
-            String username = "majed";
-            if (lg.getlogedin()) {
-                username = lg.getUsername();
-            }
+
             if (i > 0) {
                 byte[] b = new byte[i + 1];
                 is.read(b);
@@ -61,6 +65,7 @@ public class UploadProfilePic extends HttpServlet{
             }
 
         }
+        response.sendRedirect(Default.URL_ROOT + "/Profile/" + username);
 
     }
 }
