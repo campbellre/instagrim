@@ -1,4 +1,5 @@
-<%-- 
+<%@ page import="uk.ac.dundee.computing.aec.instagrim.lib.Default" %>
+<%--
     Document   : upload
     Created on : Sep 22, 2014, 6:31:50 PM
     Author     : Administrator
@@ -36,7 +37,7 @@
 </article>
 <footer>
     <ul>
-        <li class="footer"><a href="/Instagrim">Home</a></li>
+        <li class="footer"><a href=<%=Default.URL_ROOT%>>Home</a></li>
     </ul>
 </footer>
 </body>

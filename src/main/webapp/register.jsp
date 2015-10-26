@@ -1,4 +1,5 @@
-<%-- 
+<%@ page import="uk.ac.dundee.computing.aec.instagrim.lib.Default" %>
+<%--
     Document   : register.jsp
     Created on : Sep 28, 2014, 6:29:51 PM
     Author     : Administrator
@@ -42,10 +43,9 @@
     </form>
 
 </article>
-
 <footer>
     <ul>
-        <li class="footer"><a href="/Instagrim">Home</a></li>
+        <li class="footer"><a href=<%=Default.URL_ROOT%>>Home</a></li>
     </ul>
 </footer>
 </body>

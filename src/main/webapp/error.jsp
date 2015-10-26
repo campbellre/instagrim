@@ -1,3 +1,4 @@
+<%@ page import="uk.ac.dundee.computing.aec.instagrim.lib.Default" %>
 <%--
   User: Ryan
   Date: 20/10/2015
@@ -14,4 +15,9 @@
 <p>Something has gone wrong: </p><br />
 
 </body>
+<footer>
+    <ul>
+        <li class="footer"><a href=<%=Default.URL_ROOT%>>Home</a></li>
+    </ul>
+</footer>
 </html>

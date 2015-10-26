@@ -6,6 +6,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@page import="uk.ac.dundee.computing.aec.instagrim.stores.LoggedIn" %>
 <%@ page import="uk.ac.dundee.computing.aec.instagrim.stores.UserDetails" %>
+<%@ page import="uk.ac.dundee.computing.aec.instagrim.lib.Default" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -80,4 +81,9 @@
     %>
 
 </body>
+<footer>
+    <ul>
+        <li class="footer"><a href=<%=Default.URL_ROOT%>>Home</a></li>
+    </ul>
+</footer>
 </html>

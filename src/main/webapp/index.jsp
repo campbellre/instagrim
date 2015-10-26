@@ -7,6 +7,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@page import="uk.ac.dundee.computing.aec.instagrim.stores.LoggedIn" %>
+<%@ page import="uk.ac.dundee.computing.aec.instagrim.lib.Default" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -52,8 +53,7 @@
 </nav>
 <footer>
     <ul>
-        <li class="footer"><a href="/Instagrim">Home</a></li>
-        <li>&COPY; </li>
+        <li class="footer"><a href=<%=Default.URL_ROOT%>>Home</a></li>
     </ul>
 </footer>
 </body>

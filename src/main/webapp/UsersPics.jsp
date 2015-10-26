@@ -7,6 +7,7 @@
 <%@page import="uk.ac.dundee.computing.aec.instagrim.stores.Pic" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ page import="java.util.Iterator" %>
+<%@ page import="uk.ac.dundee.computing.aec.instagrim.lib.Default" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -52,7 +53,7 @@
 </article>
 <footer>
     <ul>
-        <li class="footer"><a href="/Instagrim">Home</a></li>
+        <li class="footer"><a href=<%=Default.URL_ROOT%>>Home</a></li>
     </ul>
 </footer>
 </body>
