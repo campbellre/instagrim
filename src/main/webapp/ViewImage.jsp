@@ -30,9 +30,9 @@
                     CommentWrapper c = itr.next();
         %>
             <li>
-                <b>
+                <b><a href="<%=Default.URL_ROOT%>/Profile/<%=c.getUser()%>" >
                     <%=c.getUser()%>
-                </b>
+                </a></b>
                 <p><%=c.getComment()%></p>
             </li>
         <%
