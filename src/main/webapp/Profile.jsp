@@ -23,7 +23,7 @@
 <nav>
     <ul>
         <li><a href="upload.jsp">Upload</a></li>
-        <li><a href="/Instagrim/logout.jsp">Logout</a></li>
+        <li><a href="/Instagrim/logout">Logout</a></li>
     </ul>
 </nav>
     <%

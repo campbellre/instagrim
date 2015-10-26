@@ -73,14 +73,12 @@ public class ViewImage extends HttpServlet {
         Comment c = new Comment();
         c.setCluster(cluster);
         TreeSet<CommentWrapper> comments = null;
-        try {
-            comments = c.GetComments(args[2]);
-        } catch (DataException e) {
-            e.printStackTrace();
-        }
-        Iterator<CommentWrapper> it = comments.iterator();
 
-        request.setAttribute("commentsi", it);
+        comments = c.GetComments(args[2]);
+
+
+        Iterator<CommentWrapper> itr = comments.iterator();
+        request.setAttribute("comments", itr);
 
 
         RequestDispatcher rd = request.getRequestDispatcher("/ViewImage.jsp");

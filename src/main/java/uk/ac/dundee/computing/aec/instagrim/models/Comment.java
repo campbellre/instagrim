@@ -30,7 +30,7 @@ public class Comment {
 
     }
 
-    public TreeSet<CommentWrapper> GetComments(String PUUID) throws DataException {
+    public TreeSet<CommentWrapper> GetComments(String PUUID) {
         Session session = cluster.connect(Default.KEYSPACE_NAME);
 
         PreparedStatement GetComments = session.prepare("SELECT * FROM piccomments where picid=?");
@@ -38,11 +38,6 @@ public class Comment {
         BoundStatement b = new BoundStatement(GetComments);
 
         ResultSet rs = session.execute(b.bind(UUID.fromString(PUUID)));
-
-        if(rs.isExhausted())
-        {
-            throw new DataException("No Such Pic");
-        }
 
         // From : http://stackoverflow.com/a/15636244
         Comparator<CommentWrapper> cmp = new Comparator<CommentWrapper>() {
