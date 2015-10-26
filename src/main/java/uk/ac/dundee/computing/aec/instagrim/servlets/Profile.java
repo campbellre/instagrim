@@ -79,31 +79,6 @@ public class Profile extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
-        System.out.print(request.getContextPath());
-
-        UserDetails ud = new UserDetails();
-
-        HttpSession session = request.getSession();
-
-        String username = ((LoggedIn) session.getAttribute("LoggedIn")).getUsername();
-
-        ud.setLogin(username);
-        ud.setFirstname(request.getParameter("firstname"));
-        ud.setLastname(request.getParameter("lastname"));
-        ud.addEmail(request.getParameter("email"));
-
-        User u = new User();
-        u.setCluster(cluster);
-
-        u.setUserDetails(ud);
-
-        response.sendRedirect(Default.URL_ROOT+"/Profile/"+ username);
-    }
-
-    @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String args[] = Convertors.SplitRequestPath(request);
 
