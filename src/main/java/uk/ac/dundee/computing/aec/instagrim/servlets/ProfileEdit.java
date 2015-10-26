@@ -64,30 +64,6 @@ public class ProfileEdit extends HttpServlet{
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
-        UserDetails ud = new UserDetails();
-
-        HttpSession session = request.getSession();
-
-        String username = ((LoggedIn) session.getAttribute("LoggedIn")).getUsername();
-
-        ud.setLogin(username);
-        ud.setFirstname(request.getParameter("firstname"));
-        ud.setLastname(request.getParameter("lastname"));
-        ud.addEmail(request.getParameter("email"));
-
-        User u = new User();
-        u.setCluster(cluster);
-
-        u.setUserDetails(ud);
-
-        response.sendRedirect(Default.URL_ROOT+"/Profile/"+ username);
-
-    }
-
-    @Override
     public String getServletInfo() {
         return "Short description";
     }
