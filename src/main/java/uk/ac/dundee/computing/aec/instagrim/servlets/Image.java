@@ -41,7 +41,6 @@ public class Image extends HttpServlet {
      */
     public Image() {
         super();
-        // TODO Auto-generated constructor stub
         CommandsMap.put("Image", 1);
         CommandsMap.put("Images", 2);
         CommandsMap.put("Thumb", 3);
@@ -49,7 +48,6 @@ public class Image extends HttpServlet {
     }
 
     public void init(ServletConfig config) throws ServletException {
-        // TODO Auto-generated method stub
         cluster = CassandraHosts.getCluster();
     }
 
@@ -125,7 +123,6 @@ public class Image extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        // TODO: alter check so as if lg is null 401
         LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");
         if (lg.getlogedin()) {
             response.sendRedirect("401");
