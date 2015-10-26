@@ -23,7 +23,7 @@
 <nav>
     <ul>
         <li><a href="upload.jsp">Upload</a></li>
-        <li><a href="/Instagrim/logout">Logout</a></li>
+        <li><a href="<%=Default.URL_ROOT%>/logout">Logout</a></li>
     </ul>
 </nav>
 <%
@@ -45,17 +45,17 @@
             %>
 
             <div class="Edit">
-                <a href="/Instagrim/ProfileEdit/<%=lg.getUsername()%>">Edit Profile</a>
+                <a href="<%=Default.URL_ROOT%>/ProfileEdit/<%=lg.getUsername()%>">Edit Profile</a>
             </div>
             <%
             }
             if (ud.getProfilepicUUID().equals("")) {
             %>
-                <img src="/Instagrim/user.png"/>
+                <img src="<%=Default.URL_ROOT%>/user.png"/>
             <%
             } else {
             %>
-                <img src="/Instagrim/Image/<%=ud.getProfilepicUUID()%>"/>
+                <img src="<%=Default.URL_ROOT%>/Image/<%=ud.getProfilepicUUID()%>"/>
             <% } %>
                 <ul>
                     <li>Username: <%=user%>

@@ -13,7 +13,7 @@
     <title></title>
 </head>
 <body>
-    <img src="/Instagrim/Image/<%=request.getAttribute("image_url")%>" />
+    <img src="<%=Default.URL_ROOT%>/Image/<%=request.getAttribute("image_url")%>" />
 
     <form  method="POST" action="<%=request.getAttribute("image_url")%>">
         <textarea name="CommentBody" placeholder="Enter a Comment..."></textarea>

@@ -13,7 +13,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Instagrim</title>
-    <link rel="stylesheet" type="text/css" href="/Instagrim/Styles.css"/>
+    <link rel="stylesheet" type="text/css" href="<%=Default.URL_ROOT%>/Styles.css"/>
 </head>
 <body>
 <header>
@@ -25,7 +25,7 @@
 
 <nav>
     <ul>
-        <li class="nav"><a href="/Instagrim/upload.jsp">Upload</a></li>
+        <li class="nav"><a href="<%=Default.URL_ROOT%>/upload.jsp">Upload</a></li>
     </ul>
 </nav>
 
@@ -44,7 +44,7 @@
             Pic p = iterator.next();
 
     %>
-    <a href="/Instagrim/ViewImage/<%=p.getSUUID()%>"><img src="/Instagrim/Thumb/<%=p.getSUUID()%>"></a><br/><%
+    <a href="<%=Default.URL_ROOT%>/ViewImage/<%=p.getSUUID()%>"><img src="<%=Default.URL_ROOT%>/Thumb/<%=p.getSUUID()%>"></a><br/><%
 
         }
     }

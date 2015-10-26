@@ -38,7 +38,7 @@
         </form>
     </div>
 
-    <a href="/Instagrim/UploadProfilePic.jsp">Upload a Profile Picture</a>
+    <a href="<%=Default.URL_ROOT%>/UploadProfilePic.jsp">Upload a Profile Picture</a>
 
     <%
             }
