@@ -26,7 +26,7 @@
     %>
 
     <div class="Details">
-        <form method="POST" action="ProfileEdit">
+        <form method="POST" action="Profile">
             <ul>
                 <li>First Name: <input type="text" name="firstname" value=<%=ud.getFirstname()%>></li>
                 <li>Last Name: <input type="text" name="lastname" value=<%=ud.getLastname()%>></li>

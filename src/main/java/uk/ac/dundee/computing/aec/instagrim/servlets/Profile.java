@@ -12,6 +12,7 @@ import uk.ac.dundee.computing.aec.instagrim.models.User;
 import uk.ac.dundee.computing.aec.instagrim.stores.LoggedIn;
 import uk.ac.dundee.computing.aec.instagrim.stores.UserDetails;
 
+import javax.persistence.Convert;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.awt.image.ColorConvertOp;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -73,6 +75,54 @@ public class Profile extends HttpServlet {
         session.setAttribute("UserDetails",ud);
 
         rd.forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException
+    {
+        UserDetails ud = new UserDetails();
+
+        HttpSession session = request.getSession();
+
+        String username = ((LoggedIn) session.getAttribute("LoggedIn")).getUsername();
+
+        ud.setLogin(username);
+        ud.setFirstname(request.getParameter("firstname"));
+        ud.setLastname(request.getParameter("lastname"));
+        ud.addEmail(request.getParameter("email"));
+
+        User u = new User();
+        u.setCluster(cluster);
+
+        u.setUserDetails(ud);
+
+        response.sendRedirect("/Instagrim/Profile/"+ username);
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String args[] = Convertors.SplitRequestPath(request);
+
+        HttpSession session = request.getSession();
+        LoggedIn lg = ((LoggedIn)session.getAttribute("LoggedIn"));
+
+        if(lg == null)
+        {
+            response.sendRedirect("404");
+        }
+
+        if(lg.getUsername().equals(args[2]))
+        {
+            User u = new User();
+            u.setCluster(cluster);
+
+            u.deleteUser(args[2]);
+        }
+        else{
+            response.sendRedirect("401");
+        }
+
     }
 
 

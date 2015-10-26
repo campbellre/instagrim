@@ -4,7 +4,6 @@
   Time: 15:41
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@page import="uk.ac.dundee.computing.aec.instagrim.stores.LoggedIn" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,8 +12,7 @@
 </head>
 <body>
 <%
-    LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");
-    lg.setLogedout();
+    session.invalidate();
     response.sendRedirect("/Instagrim/index.jsp");
 %>
 </body>

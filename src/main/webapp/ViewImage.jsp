@@ -22,7 +22,7 @@
     <p>Comments: </p>
     <ul>
         <%
-            Iterator<CommentWrapper> itr = (Iterator<CommentWrapper>) request.getAttribute("commentsi");
+            Iterator<CommentWrapper> itr = (Iterator<CommentWrapper>) request.getAttribute("comments");
             if (itr != null) {
                 while (itr.hasNext()) {
                     CommentWrapper c = itr.next();

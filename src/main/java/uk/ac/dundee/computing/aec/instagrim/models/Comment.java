@@ -2,6 +2,7 @@ package uk.ac.dundee.computing.aec.instagrim.models;
 
 import com.datastax.driver.core.*;
 import uk.ac.dundee.computing.aec.instagrim.lib.CommentWrapper;
+import uk.ac.dundee.computing.aec.instagrim.lib.DataException;
 
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -28,7 +29,7 @@ public class Comment {
 
     }
 
-    public TreeSet<CommentWrapper> GetComments(String PUUID) {
+    public TreeSet<CommentWrapper> GetComments(String PUUID) throws DataException {
         Session session = cluster.connect("instagrim");
 
         PreparedStatement GetComments = session.prepare("SELECT * FROM piccomments where picid=?");
@@ -36,6 +37,11 @@ public class Comment {
         BoundStatement b = new BoundStatement(GetComments);
 
         ResultSet rs = session.execute(b.bind(UUID.fromString(PUUID)));
+
+        if(rs.isExhausted())
+        {
+            throw new DataException("No Such Pic");
+        }
 
         // From : http://stackoverflow.com/a/15636244
         Comparator<CommentWrapper> cmp = new Comparator<CommentWrapper>() {
@@ -51,7 +57,9 @@ public class Comment {
 
         for(Row row : rs)
         {
-            returnSet.add(new CommentWrapper(new Timestamp((row.getDate("time")).getTime()), row.getString("user"), row.getString("comment")) );
+            returnSet.add(new CommentWrapper(new Timestamp((row.getDate("time")).getTime()),
+                    row.getString("user"),
+                    row.getString("comment")) );
         }
 
         return returnSet;

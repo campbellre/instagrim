@@ -3,7 +3,9 @@ package uk.ac.dundee.computing.aec.instagrim.servlets;
 import com.datastax.driver.core.Cluster;
 import uk.ac.dundee.computing.aec.instagrim.lib.CassandraHosts;
 import uk.ac.dundee.computing.aec.instagrim.lib.Convertors;
+import uk.ac.dundee.computing.aec.instagrim.lib.DataException;
 import uk.ac.dundee.computing.aec.instagrim.models.PicModel;
+import uk.ac.dundee.computing.aec.instagrim.models.User;
 import uk.ac.dundee.computing.aec.instagrim.stores.LoggedIn;
 import uk.ac.dundee.computing.aec.instagrim.stores.Pic;
 
@@ -14,7 +16,9 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.*;
+import java.security.acl.Owner;
 import java.util.HashMap;
+import java.util.ResourceBundle;
 
 /**
  * Servlet implementation class Image
@@ -57,7 +61,6 @@ public class Image extends HttpServlet {
      * response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO Auto-generated method stub
         String args[] = Convertors.SplitRequestPath(request);
         int command;
         try {
@@ -82,9 +85,15 @@ public class Image extends HttpServlet {
     }
 
     private void DisplayImageList(String User, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         PicModel tm = new PicModel();
         tm.setCluster(cluster);
-        java.util.LinkedList<Pic> lsPics = tm.getPicsForUser(User);
+        java.util.LinkedList<Pic> lsPics = null;
+        try {
+            lsPics = tm.getPicsForUser(User);
+        } catch (DataException e) {
+            response.sendRedirect("404");
+        }
         RequestDispatcher rd = request.getRequestDispatcher("/UsersPics.jsp");
         request.setAttribute("Pics", lsPics);
         rd.forward(request, response);
@@ -96,7 +105,12 @@ public class Image extends HttpServlet {
         tm.setCluster(cluster);
 
 
-        Pic p = tm.getPic(type, java.util.UUID.fromString(Image));
+        Pic p = null;
+        try {
+            p = tm.getPic(type, java.util.UUID.fromString(Image));
+        } catch (DataException e) {
+            response.sendRedirect("404");
+        }
 
         OutputStream out = response.getOutputStream();
 
@@ -122,6 +136,7 @@ public class Image extends HttpServlet {
             InputStream is = request.getPart(part.getName()).getInputStream();
             int i = is.available();
             HttpSession session = request.getSession();
+            // TODO: alter check so as if lg is null 401
             LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");
             String username = "majed";
             if (lg.getlogedin()) {
@@ -142,6 +157,37 @@ public class Image extends HttpServlet {
         }
 
     }
+
+    @Override
+    public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession();
+
+        String args[] = Convertors.SplitRequestPath(request);
+
+        LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");
+        if (lg != null) { /* return 4040 */ }
+
+        PicModel pm = new PicModel();
+
+        try {
+            String owner = pm.getOwner(args[2]);
+
+        // ensure is owner
+             if (lg.getUsername().equals(owner)) {
+                 pm.deletePic(args[2]);
+             }
+            else
+             {
+                 response.sendRedirect("401");
+             }
+        } catch (DataException e) {
+            response.sendRedirect("404");
+        }
+
+
+
+    }
+
 
     private void error(String mess, HttpServletResponse response) throws ServletException, IOException {
 

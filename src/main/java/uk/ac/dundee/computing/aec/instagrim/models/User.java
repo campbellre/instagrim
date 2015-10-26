@@ -8,6 +8,7 @@ package uk.ac.dundee.computing.aec.instagrim.models;
 import com.datastax.driver.core.*;
 import com.datastax.driver.core.Row;
 import uk.ac.dundee.computing.aec.instagrim.lib.AeSimpleSHA1;
+import uk.ac.dundee.computing.aec.instagrim.lib.Default;
 import uk.ac.dundee.computing.aec.instagrim.stores.UserDetails;
 
 import java.io.UnsupportedEncodingException;
@@ -180,4 +181,13 @@ public class User {
 
     }
 
+    public void deleteUser(String user) {
+        Session session = cluster.connect(Default.KEYSPACE_NAME);
+
+        PreparedStatement psDeleteUser = session.prepare("delete from userprofiles where login = ?");
+        BoundStatement bsDeleteUser = new BoundStatement(psDeleteUser);
+
+        session.execute(bsDeleteUser.bind(user));
+
+    }
 }

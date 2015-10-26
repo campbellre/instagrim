@@ -17,7 +17,10 @@ import com.datastax.driver.core.*;
 import org.imgscalr.Scalr.*;
 import sun.util.resources.cldr.lag.CurrencyNames_lag;
 import uk.ac.dundee.computing.aec.instagrim.lib.Convertors;
+import uk.ac.dundee.computing.aec.instagrim.lib.DataException;
+import uk.ac.dundee.computing.aec.instagrim.lib.Default;
 import uk.ac.dundee.computing.aec.instagrim.stores.Pic;
+import uk.ac.dundee.computing.aec.instagrim.stores.UserDetails;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -27,6 +30,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Date;
+import java.util.UUID;
 
 import static org.imgscalr.Scalr.*;
 //import uk.ac.dundee.computing.aec.stores.TweetStore;
@@ -133,32 +137,37 @@ public class PicModel {
         return null;
     }
 
-    public java.util.LinkedList<Pic> getPicsForUser(String User) {
+    public java.util.LinkedList<Pic> getPicsForUser(String User) throws DataException {
         java.util.LinkedList<Pic> Pics = new java.util.LinkedList<>();
         Session session = cluster.connect("instagrim");
         PreparedStatement ps = session.prepare("select picid from userpiclist where user =?");
         ResultSet rs = null;
         BoundStatement boundStatement = new BoundStatement(ps);
-        rs = session.execute( // this is where the query is executed
-                boundStatement.bind( // here you are binding the 'boundStatement'
-                        User));
-        if (rs.isExhausted()) {
-            System.out.println("No Images returned");
-            return null;
-        } else {
-            for (Row row : rs) {
-                Pic pic = new Pic();
-                java.util.UUID UUID = row.getUUID("picid");
-                System.out.println("UUID" + UUID.toString());
-                pic.setUUID(UUID);
-                Pics.add(pic);
+        try {
+            rs = session.execute( // this is where the query is executed
+                    boundStatement.bind( // here you are binding the 'boundStatement'
+                            User));
+            if (rs.isExhausted()) {
+                System.out.println("No Images returned");
+                return null;
+            } else {
+                for (Row row : rs) {
+                    Pic pic = new Pic();
+                    java.util.UUID UUID = row.getUUID("picid");
+                    System.out.println("UUID" + UUID.toString());
+                    pic.setUUID(UUID);
+                    Pics.add(pic);
 
+                }
             }
+        }
+        catch(Exception ex) {
+            throw new DataException("No Such User");
         }
         return Pics;
     }
 
-    public Pic getPic(int image_type, java.util.UUID picid) {
+    public Pic getPic(int image_type, java.util.UUID picid) throws DataException {
         Session session = cluster.connect("instagrim");
         ByteBuffer bImage = null;
         String type = null;
@@ -203,8 +212,7 @@ public class PicModel {
                 }
             }
         } catch (Exception et) {
-            System.out.println("Can't get Pic" + et);
-            return null;
+            throw new DataException("No Such Pic");
         }
         session.close();
         Pic p = new Pic();
@@ -258,5 +266,42 @@ public class PicModel {
             System.out.println("Error --> " + ex);
         }
     }
+
+    public String getOwner(String PUUID) throws DataException {
+        Session session = cluster.connect(Default.KEYSPACE_NAME);
+        PreparedStatement psOwner = session.prepare("Select user from pic where picid = ?");
+
+        BoundStatement bsGetOwner = new BoundStatement(psOwner);
+
+        ResultSet rs = session.execute(bsGetOwner.bind(UUID.fromString(PUUID)));
+
+        if(rs.isExhausted())
+        {
+            throw new DataException("No Such User");
+        }
+
+        String ret = null;
+
+        for(Row row : rs)
+        {
+            ret = row.getString("user");
+        }
+
+        return ret;
+    }
+
+    public void deletePic(String PUUID)
+    {
+        Session session = cluster.connect(Default.KEYSPACE_NAME);
+
+        PreparedStatement psDelete = session.prepare("Delete from pic where picid = ?");
+        BoundStatement bsDelete = new BoundStatement(psDelete);
+
+        session.execute(bsDelete.bind(UUID.fromString(PUUID)));
+
+
+    }
+
+
 
 }

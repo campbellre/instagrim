@@ -26,7 +26,7 @@
 <article>
     <h3>File Upload</h3>
 
-    <form method="POST" enctype="multipart/form-data" action="Image">
+    <form method="POST" enctype="multipart/form-data" a.ction="Image">
         File to upload: <input type="file" name="upfile"><br/>
 
         <br/>
