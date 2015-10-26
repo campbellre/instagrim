@@ -51,9 +51,20 @@
                     </div>
                 <%
                 }
+
+                if(ud.getProfilepicUUID() == null)
+                {
+                %>
+                <img src="/Instagrim/user.png" />
+                <%
+                }
+                else{
                 %>
 
                 <img src="/Instagrim/Image/<%=ud.getProfilepicUUID()%>" />
+                <%
+                    }
+                %>
 
                 <ul>
                     <li>Username: <%=user%>

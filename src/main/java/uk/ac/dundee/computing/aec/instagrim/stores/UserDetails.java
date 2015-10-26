@@ -17,7 +17,7 @@ public class UserDetails {
     private String lastname;
     private TreeSet<String> email;
     private String password;
-    private Pic profilepicuuid;
+    private Pic profilepicuuid = null;
 
     public String getProfilepicUUID()
     {
@@ -87,6 +87,5 @@ public class UserDetails {
     public UserDetails() {
         this.email = new TreeSet<>();
         this.profilepicuuid = new Pic();
-        this.profilepicuuid.setUUID(Default.USER_PROFILE_PIC);
     }
 }
