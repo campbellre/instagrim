@@ -15,12 +15,10 @@ package uk.ac.dundee.computing.aec.instagrim.models;
 
 import com.datastax.driver.core.*;
 import org.imgscalr.Scalr.*;
-import sun.util.resources.cldr.lag.CurrencyNames_lag;
 import uk.ac.dundee.computing.aec.instagrim.lib.Convertors;
 import uk.ac.dundee.computing.aec.instagrim.lib.DataException;
 import uk.ac.dundee.computing.aec.instagrim.lib.Default;
 import uk.ac.dundee.computing.aec.instagrim.stores.Pic;
-import uk.ac.dundee.computing.aec.instagrim.stores.UserDetails;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -37,22 +35,18 @@ import static org.imgscalr.Scalr.*;
 
 public class PicModel {
 
-    Cluster cluster;
+    private Cluster cluster;
 
-    public static BufferedImage createThumbnail(BufferedImage img) {
+    private static BufferedImage createThumbnail(BufferedImage img) {
         img = resize(img, Method.SPEED, 250, OP_ANTIALIAS, OP_GRAYSCALE);
         // Let's add a little border before we return result.
         return pad(img, 2);
     }
 
-    public static BufferedImage createProcessed(BufferedImage img) {
+    private static BufferedImage createProcessed(BufferedImage img) {
         int Width = img.getWidth() - 1;
         img = resize(img, Method.SPEED, Width, OP_ANTIALIAS, OP_GRAYSCALE);
         return pad(img, 4);
-    }
-
-    public void PicModel() {
-
     }
 
     public void setCluster(Cluster cluster) {
@@ -61,12 +55,10 @@ public class PicModel {
 
     public void insertPic(byte[] b, String type, String name, String user) {
         try {
-            Convertors convertor = new Convertors();
-
             String types[] = Convertors.SplitFiletype(type);
             ByteBuffer buffer = ByteBuffer.wrap(b);
             int length = b.length;
-            java.util.UUID picid = convertor.getTimeUUID();
+            java.util.UUID picid = Convertors.getTimeUUID();
 
             //The following is a quick and dirty way of doing this, will fill the disk quickly !
             Boolean success = (new File("/var/tmp/" + Default.KEYSPACE_NAME + "/")).mkdirs();
@@ -102,7 +94,7 @@ public class PicModel {
     // and can be set though temp > properties > security > users > write.
     // If you have changed the folder be sure that you have write permissions
     // there as well.
-    public byte[] picresize(String picid, String type) {
+    private byte[] picresize(String picid, String type) {
         try {
 
             BufferedImage BI = ImageIO.read(new File("/var/tmp/" + Default.KEYSPACE_NAME+"/" + picid));
@@ -122,7 +114,7 @@ public class PicModel {
         return null;
     }
 
-    public byte[] picdecolour(String picid, String type) {
+    private byte[] picdecolour(String picid, String type) {
         try {
             BufferedImage BI = ImageIO.read(new File("/var/tmp/"+ Default.KEYSPACE_NAME + "/" + picid));
             BufferedImage processed = createProcessed(BI);
@@ -227,12 +219,10 @@ public class PicModel {
     public void InsertProfilePic(byte[] b, String type, String name, String user)
     {
         try {
-            Convertors convertor = new Convertors();
-
             String types[] = Convertors.SplitFiletype(type);
             ByteBuffer buffer = ByteBuffer.wrap(b);
             int length = b.length;
-            java.util.UUID picid = convertor.getTimeUUID();
+            java.util.UUID picid = Convertors.getTimeUUID();
 
             //The following is a quick and dirty way of doing this, will fill the disk quickly !
             Boolean success = (new File("/var/tmp/" + Default.KEYSPACE_NAME + "/")).mkdirs();

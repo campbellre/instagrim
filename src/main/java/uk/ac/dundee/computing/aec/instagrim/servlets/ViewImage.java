@@ -1,8 +1,10 @@
 package uk.ac.dundee.computing.aec.instagrim.servlets;
 
 import com.datastax.driver.core.Cluster;
-import org.omg.CORBA.RepositoryIdHelper;
-import uk.ac.dundee.computing.aec.instagrim.lib.*;
+import uk.ac.dundee.computing.aec.instagrim.lib.CassandraHosts;
+import uk.ac.dundee.computing.aec.instagrim.lib.CommentWrapper;
+import uk.ac.dundee.computing.aec.instagrim.lib.Convertors;
+import uk.ac.dundee.computing.aec.instagrim.lib.Default;
 import uk.ac.dundee.computing.aec.instagrim.models.Comment;
 import uk.ac.dundee.computing.aec.instagrim.stores.LoggedIn;
 
@@ -15,8 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -28,7 +28,7 @@ import java.util.TreeSet;
 @WebServlet(name = "ViewImage", urlPatterns = "/ViewImage/*")
 public class ViewImage extends HttpServlet {
 
-    Cluster cluster = null;
+    private Cluster cluster = null;
 
     public void init(ServletConfig config) throws ServletException {
         cluster = CassandraHosts.getCluster();
@@ -55,7 +55,7 @@ public class ViewImage extends HttpServlet {
 
             }
             else{
-                // Error message
+
             }
 
 

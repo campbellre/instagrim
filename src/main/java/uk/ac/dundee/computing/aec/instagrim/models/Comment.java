@@ -2,12 +2,13 @@ package uk.ac.dundee.computing.aec.instagrim.models;
 
 import com.datastax.driver.core.*;
 import uk.ac.dundee.computing.aec.instagrim.lib.CommentWrapper;
-import uk.ac.dundee.computing.aec.instagrim.lib.DataException;
 import uk.ac.dundee.computing.aec.instagrim.lib.Default;
 
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Comparator;
+import java.util.TreeSet;
+import java.util.UUID;
 
 
 /**
@@ -15,7 +16,7 @@ import java.util.*;
  */
 public class Comment {
 
-    Cluster cluster;
+    private Cluster cluster;
 
     public Comment() {}
 

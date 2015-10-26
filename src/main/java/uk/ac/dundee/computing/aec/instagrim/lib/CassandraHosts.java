@@ -16,7 +16,7 @@ import java.util.Set;
  */
 public final class CassandraHosts {
 
-    static String Host = "127.0.0.1";  //at least one starting point to talk to
+    private static final String Host = "127.0.0.1";  //at least one starting point to talk to
     private static Cluster cluster;
 
     public CassandraHosts() {
@@ -27,7 +27,7 @@ public final class CassandraHosts {
         return (Host);
     }
 
-    public static String[] getHosts(Cluster cluster) {
+    private static String[] getHosts(Cluster cluster) {
 
         if (cluster == null) {
             System.out.println("Creating cluster connection");

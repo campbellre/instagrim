@@ -9,7 +9,7 @@ public final class Default {
 
     public static UUID USER_PROFILE_PIC = UUID.fromString("67eba650-7a4f-11e5-b801-f8a96334e7c6");
 
-    public static String KEYSPACE_NAME = "instagrim";
+    public static final String KEYSPACE_NAME = "instagrim";
 
-    public static String URL_ROOT = "/Instagrim";
+    public static final String URL_ROOT = "/Instagrim";
 }

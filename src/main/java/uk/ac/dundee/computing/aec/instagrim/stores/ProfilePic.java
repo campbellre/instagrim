@@ -1,13 +1,11 @@
 package uk.ac.dundee.computing.aec.instagrim.stores;
 
-import uk.ac.dundee.computing.aec.instagrim.servlets.Image;
-
 /**
  * Created by Ryan on 24/10/2015.
  *
  * Store class for a users profile picture, including picture details.
  */
-public class ProfilePic {
+class ProfilePic {
 
     public ProfilePic() {
     }

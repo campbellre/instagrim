@@ -10,7 +10,7 @@
 <head>
     <title></title>
 </head>
-<>
+<body>
 
 <p>Something has gone wrong: </p><br />
 

@@ -37,7 +37,7 @@ public class UploadProfilePic extends HttpServlet{
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");;
+        LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");
         if (lg == null) {
             response.sendRedirect(Default.URL_ROOT);
         }

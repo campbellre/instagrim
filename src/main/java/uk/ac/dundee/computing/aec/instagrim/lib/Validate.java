@@ -28,46 +28,31 @@ public class Validate {
 
     private boolean checkUsername(String username) {
         /* TODO: finish username checks */
-        if (username.isEmpty()) {
-            return false;
-        }
-        return true;
+        return !username.isEmpty();
     }
 
     private boolean checkPassword(String password) {
         /* TODO: finish password checks */
 
-        if (password.isEmpty()) {
-            return false;
-        }
-        return true;
+        return !password.isEmpty();
     }
 
     private boolean checkFirstname(String firstname) {
         /* TODO: finish firstname checks */
 
-        if (firstname.isEmpty()) {
-            return false;
-        }
-        return true;
+        return !firstname.isEmpty();
     }
 
     private boolean checkLastname(String lastname) {
         /* TODO: finish lastname checks */
 
-        if (lastname.isEmpty()) {
-            return false;
-        }
-        return true;
+        return !lastname.isEmpty();
     }
 
     private boolean checkEmail(String email) {
         /* TODO: finish email checks */
 
-        if (email.isEmpty()) {
-            return false;
-        }
-        return true;
+        return !email.isEmpty();
     }
 
 

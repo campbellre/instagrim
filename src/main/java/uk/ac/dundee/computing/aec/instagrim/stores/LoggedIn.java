@@ -10,12 +10,8 @@ package uk.ac.dundee.computing.aec.instagrim.stores;
  * @author Administrator
  */
 public class LoggedIn {
-    boolean logedin = false;
-    String Username = null;
-
-    public void LogedIn() {
-
-    }
+    private boolean logedin = false;
+    private String Username = null;
 
     public String getUsername() {
         return Username;

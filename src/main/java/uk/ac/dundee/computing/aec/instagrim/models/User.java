@@ -6,7 +6,6 @@
 package uk.ac.dundee.computing.aec.instagrim.models;
 
 import com.datastax.driver.core.*;
-import com.datastax.driver.core.Row;
 import uk.ac.dundee.computing.aec.instagrim.lib.AeSimpleSHA1;
 import uk.ac.dundee.computing.aec.instagrim.lib.Default;
 import uk.ac.dundee.computing.aec.instagrim.stores.UserDetails;
@@ -19,17 +18,17 @@ import java.security.NoSuchAlgorithmException;
  */
 public class User {
 
-    Cluster cluster;
+    private Cluster cluster;
 
     public User() {
 
     }
 
-    public boolean RegisterUser(String username, String Password) {
+    private boolean RegisterUser(String username, String Password) {
         AeSimpleSHA1 sha1handler = new AeSimpleSHA1();
         String EncodedPassword = null;
         try {
-            EncodedPassword = sha1handler.SHA1(Password);
+            EncodedPassword = AeSimpleSHA1.SHA1(Password);
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException et) {
             System.out.println("Can't check your password");
             return false;
@@ -55,10 +54,9 @@ public class User {
     }
 
     public boolean IsValidUser(String username, String Password) {
-        AeSimpleSHA1 sha1handler = new AeSimpleSHA1();
-        String EncodedPassword = null;
+        String EncodedPassword;
         try {
-            EncodedPassword = sha1handler.SHA1(Password);
+            EncodedPassword = AeSimpleSHA1.SHA1(Password);
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException et) {
             System.out.println("Can't check your password");
             return false;

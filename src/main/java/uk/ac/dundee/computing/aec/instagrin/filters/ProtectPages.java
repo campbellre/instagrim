@@ -33,7 +33,7 @@ public class ProtectPages implements Filter {
     public ProtectPages() {
     }
 
-    public static String getStackTrace(Throwable t) {
+    private static String getStackTrace(Throwable t) {
         String stackTrace = null;
         try {
             StringWriter sw = new StringWriter();
@@ -47,8 +47,7 @@ public class ProtectPages implements Filter {
         return stackTrace;
     }
 
-    private void doBeforeProcessing(ServletRequest request, ServletResponse response)
-            throws IOException, ServletException {
+    private void doBeforeProcessing(ServletRequest request, ServletResponse response) {
         if (debug) {
             log("ProtectPages:DoBeforeProcessing");
         }
@@ -75,8 +74,7 @@ public class ProtectPages implements Filter {
          */
     }
 
-    private void doAfterProcessing(ServletRequest request, ServletResponse response)
-            throws IOException, ServletException {
+    private void doAfterProcessing(ServletRequest request, ServletResponse response) {
         if (debug) {
             log("ProtectPages:DoAfterProcessing");
         }
@@ -205,7 +203,7 @@ public class ProtectPages implements Filter {
         if (filterConfig == null) {
             return ("ProtectPages()");
         }
-        StringBuffer sb = new StringBuffer("ProtectPages(");
+        StringBuilder sb = new StringBuilder("ProtectPages(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());
@@ -241,7 +239,7 @@ public class ProtectPages implements Filter {
         }
     }
 
-    public void log(String msg) {
+    private void log(String msg) {
         filterConfig.getServletContext().log(msg);
     }
 

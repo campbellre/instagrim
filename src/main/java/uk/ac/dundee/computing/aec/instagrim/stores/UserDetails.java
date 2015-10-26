@@ -1,8 +1,5 @@
 package uk.ac.dundee.computing.aec.instagrim.stores;
 
-import com.sun.javafx.font.PrismFontFile;
-import uk.ac.dundee.computing.aec.instagrim.lib.Default;
-
 import java.util.TreeSet;
 import java.util.UUID;
 

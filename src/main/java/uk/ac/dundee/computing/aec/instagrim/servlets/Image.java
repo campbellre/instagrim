@@ -5,7 +5,6 @@ import uk.ac.dundee.computing.aec.instagrim.lib.CassandraHosts;
 import uk.ac.dundee.computing.aec.instagrim.lib.Convertors;
 import uk.ac.dundee.computing.aec.instagrim.lib.DataException;
 import uk.ac.dundee.computing.aec.instagrim.models.PicModel;
-import uk.ac.dundee.computing.aec.instagrim.models.User;
 import uk.ac.dundee.computing.aec.instagrim.stores.LoggedIn;
 import uk.ac.dundee.computing.aec.instagrim.stores.Pic;
 
@@ -16,9 +15,7 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.*;
-import java.security.acl.Owner;
 import java.util.HashMap;
-import java.util.ResourceBundle;
 
 /**
  * Servlet implementation class Image
@@ -36,7 +33,7 @@ public class Image extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     private Cluster cluster;
-    private HashMap CommandsMap = new HashMap();
+    private final HashMap CommandsMap = new HashMap();
 
 
     /**
@@ -100,7 +97,7 @@ public class Image extends HttpServlet {
 
     }
 
-    private void DisplayImage(int type, String Image, HttpServletResponse response) throws ServletException, IOException {
+    private void DisplayImage(int type, String Image, HttpServletResponse response) throws IOException {
         PicModel tm = new PicModel();
         tm.setCluster(cluster);
 
@@ -127,6 +124,14 @@ public class Image extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        // TODO: alter check so as if lg is null 401
+        LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");
+        if (lg.getlogedin()) {
+            response.sendRedirect("401");
+        }
+        String username = lg.getUsername();
+
         for (Part part : request.getParts()) {
             System.out.println("Part Name " + part.getName());
 
@@ -135,13 +140,7 @@ public class Image extends HttpServlet {
 
             InputStream is = request.getPart(part.getName()).getInputStream();
             int i = is.available();
-            HttpSession session = request.getSession();
-            // TODO: alter check so as if lg is null 401
-            LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");
-            String username = "majed";
-            if (lg.getlogedin()) {
-                username = lg.getUsername();
-            }
+
             if (i > 0) {
                 byte[] b = new byte[i + 1];
                 is.read(b);
@@ -189,13 +188,12 @@ public class Image extends HttpServlet {
     }
 
 
-    private void error(String mess, HttpServletResponse response) throws ServletException, IOException {
+    private void error(String mess, HttpServletResponse response) throws IOException {
 
         PrintWriter out = null;
         out = new PrintWriter(response.getOutputStream());
         out.println("<h1>You have a na error in your input</h1>");
         out.println("<h2>" + mess + "</h2>");
         out.close();
-        return;
     }
 }

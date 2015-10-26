@@ -29,7 +29,7 @@ import java.io.IOException;
 @WebServlet(name = "Login", urlPatterns = {"/Login"})
 public class Login extends HttpServlet {
 
-    Cluster cluster = null;
+    private Cluster cluster = null;
 
 
     public void init(ServletConfig config) throws ServletException {

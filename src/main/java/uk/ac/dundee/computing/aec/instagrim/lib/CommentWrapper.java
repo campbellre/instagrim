@@ -11,8 +11,6 @@ public class CommentWrapper {
     private String user;
     private String comment;
 
-    public CommentWrapper() {
-    }
 
     public CommentWrapper(Timestamp t, String u, String c)
     {
