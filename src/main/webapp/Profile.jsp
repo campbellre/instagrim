@@ -4,9 +4,9 @@
   Time: 15:41
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@page import="uk.ac.dundee.computing.aec.instagrim.stores.LoggedIn" %>
+<%@page import="uk.ac.dundee.computing.aec.instagrim.lib.Default" %>
+<%@ page import="uk.ac.dundee.computing.aec.instagrim.stores.LoggedIn" %>
 <%@ page import="uk.ac.dundee.computing.aec.instagrim.stores.UserDetails" %>
-<%@ page import="uk.ac.dundee.computing.aec.instagrim.lib.Default" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,46 +26,37 @@
         <li><a href="/Instagrim/logout">Logout</a></li>
     </ul>
 </nav>
-    <%
+<%
     LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");
     if (lg != null) {
-        if (lg.getlogedin()) {
-            String user = (String) session.getAttribute("UserPath");
+        String user = (String) session.getAttribute("UserPath");
 
-            if (user == null) {
+        if (user == null) {
             // This is sending to /instagrim/profile/index.jsp
+            response.sendRedirect("index.jsp");
+        } else {
+            UserDetails ud = (UserDetails) session.getAttribute("UserDetails");
+
+            if (ud == null) {
                 response.sendRedirect("index.jsp");
             }
-            else{
-                UserDetails ud = (UserDetails) session.getAttribute("UserDetails");
 
-                if(ud == null) {
-                    response.sendRedirect("index.jsp");
-                }
+            if (lg.getUsername().equals(user)) {
+            %>
 
-                if(lg.getUsername().equals(user)) {
-                %>
-
-                    <div class="Edit">
-                      <a href="/Instagrim/ProfileEdit/<%=lg.getUsername()%>">Edit Profile</a>
-                    </div>
-                <%
-                }
-
-                if(ud.getProfilepicUUID() == null)
-                {
-                %>
-                <img src="/Instagrim/user.png" />
-                <%
-                }
-                else{
-                %>
-
-                <img src="/Instagrim/Image/<%=ud.getProfilepicUUID()%>" />
-                <%
-                    }
-                %>
-
+            <div class="Edit">
+                <a href="/Instagrim/ProfileEdit/<%=lg.getUsername()%>">Edit Profile</a>
+            </div>
+            <%
+            }
+            if (ud.getProfilepicUUID().equals("")) {
+            %>
+                <img src="/Instagrim/user.png"/>
+            <%
+            } else {
+            %>
+                <img src="/Instagrim/Image/<%=ud.getProfilepicUUID()%>"/>
+            <% } %>
                 <ul>
                     <li>Username: <%=user%>
                     </li>
@@ -76,20 +67,10 @@
                     <li>Email: <%=ud != null ? ud.getFirstEmail() : ""%>
                     </li>
                 </ul>
-            <%
-            }
-            %>
-        <%
-        } else {
-            response.sendRedirect("index.jsp");
-        }
+<%
     }
-    else{
-    %>
-        <p>Error</p>
-    <%
     }
-    %>
+%>
 
 </body>
 <footer>
