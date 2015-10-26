@@ -8,6 +8,7 @@ package uk.ac.dundee.computing.aec.instagrim.servlets;
 
 import com.datastax.driver.core.Cluster;
 import uk.ac.dundee.computing.aec.instagrim.lib.CassandraHosts;
+import uk.ac.dundee.computing.aec.instagrim.lib.Default;
 import uk.ac.dundee.computing.aec.instagrim.lib.Validate;
 import uk.ac.dundee.computing.aec.instagrim.models.User;
 import uk.ac.dundee.computing.aec.instagrim.stores.LoggedIn;
@@ -54,7 +55,7 @@ public class Login extends HttpServlet {
         Validate notEmpty = new Validate();
 
         if (!notEmpty.validLogin(username, password)) {
-            response.sendRedirect("/Instagrim/login.jsp");
+            response.sendRedirect(Default.URL_ROOT+"/login.jsp");
         } else {
 
             User us = new User();
@@ -74,7 +75,7 @@ public class Login extends HttpServlet {
                 rd.forward(request, response);
 
             } else {
-                response.sendRedirect("/Instagrim/login.jsp");
+                response.sendRedirect(Default.URL_ROOT+"/login.jsp");
             }
         }
     }

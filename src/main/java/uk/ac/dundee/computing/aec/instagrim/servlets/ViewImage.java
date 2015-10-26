@@ -4,6 +4,7 @@ import com.datastax.driver.core.Cluster;
 import uk.ac.dundee.computing.aec.instagrim.lib.CassandraHosts;
 import uk.ac.dundee.computing.aec.instagrim.lib.CommentWrapper;
 import uk.ac.dundee.computing.aec.instagrim.lib.Convertors;
+import uk.ac.dundee.computing.aec.instagrim.lib.Default;
 import uk.ac.dundee.computing.aec.instagrim.models.Comment;
 import uk.ac.dundee.computing.aec.instagrim.stores.LoggedIn;
 
@@ -61,7 +62,7 @@ public class ViewImage extends HttpServlet {
 
 
         }
-        response.sendRedirect("/Instagrim/ViewImage/"+args[2]);
+        response.sendRedirect(Default.URL_ROOT+"/ViewImage/"+args[2]);
 
     }
 

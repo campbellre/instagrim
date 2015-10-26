@@ -34,7 +34,8 @@ public class User {
             System.out.println("Can't check your password");
             return false;
         }
-        Session session = cluster.connect("instagrim");
+
+        Session session = cluster.connect(Default.KEYSPACE_NAME);
 
         PreparedStatement checkExist = session.prepare("select * from userprofiles where login=?");
 
@@ -62,7 +63,7 @@ public class User {
             System.out.println("Can't check your password");
             return false;
         }
-        Session session = cluster.connect("instagrim");
+        Session session = cluster.connect(Default.KEYSPACE_NAME);
         PreparedStatement ps = session.prepare("select password from userprofiles where login =?");
         ResultSet rs;
         BoundStatement boundStatement = new BoundStatement(ps);
@@ -86,7 +87,7 @@ public class User {
     }
 
     public UserDetails getUserInfo(String username) {
-        Session session = cluster.connect("instagrim");
+        Session session = cluster.connect(Default.KEYSPACE_NAME);
 
         PreparedStatement validUser = session.prepare("select * from userprofiles where login=?");
 
@@ -151,7 +152,8 @@ public class User {
 
 
     public void setUserDetails(UserDetails ud) {
-        Session session = cluster.connect("instagrim");
+
+        Session session = cluster.connect(Default.KEYSPACE_NAME);
 
         PreparedStatement ps = session.prepare("UPDATE userprofiles SET first_name = ?, last_name = ?, email = ? WHERE login = ?");
 

@@ -3,6 +3,7 @@ package uk.ac.dundee.computing.aec.instagrim.models;
 import com.datastax.driver.core.*;
 import uk.ac.dundee.computing.aec.instagrim.lib.CommentWrapper;
 import uk.ac.dundee.computing.aec.instagrim.lib.DataException;
+import uk.ac.dundee.computing.aec.instagrim.lib.Default;
 
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -19,7 +20,7 @@ public class Comment {
     public Comment() {}
 
     public void EnterComment(String User, String Body, String PUUID){
-        Session session = cluster.connect("instagrim");
+        Session session = cluster.connect(Default.KEYSPACE_NAME);
 
         PreparedStatement AddComment = session.prepare("INSERT INTO piccomments (user, picid, time, comment) values (?,?, ?, ?);");
 
@@ -30,7 +31,7 @@ public class Comment {
     }
 
     public TreeSet<CommentWrapper> GetComments(String PUUID) throws DataException {
-        Session session = cluster.connect("instagrim");
+        Session session = cluster.connect(Default.KEYSPACE_NAME);
 
         PreparedStatement GetComments = session.prepare("SELECT * FROM piccomments where picid=?");
 

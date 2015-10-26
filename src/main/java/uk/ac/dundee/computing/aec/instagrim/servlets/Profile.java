@@ -8,6 +8,7 @@ package uk.ac.dundee.computing.aec.instagrim.servlets;
 import com.datastax.driver.core.Cluster;
 import uk.ac.dundee.computing.aec.instagrim.lib.CassandraHosts;
 import uk.ac.dundee.computing.aec.instagrim.lib.Convertors;
+import uk.ac.dundee.computing.aec.instagrim.lib.Default;
 import uk.ac.dundee.computing.aec.instagrim.models.User;
 import uk.ac.dundee.computing.aec.instagrim.stores.LoggedIn;
 import uk.ac.dundee.computing.aec.instagrim.stores.UserDetails;
@@ -97,7 +98,7 @@ public class Profile extends HttpServlet {
 
         u.setUserDetails(ud);
 
-        response.sendRedirect("/Instagrim/Profile/"+ username);
+        response.sendRedirect(Default.URL_ROOT+"/Profile/"+ username);
     }
 
     @Override
