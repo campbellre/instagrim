@@ -40,12 +40,12 @@ public class ViewImage extends HttpServlet {
         String args[] = Convertors.SplitRequestPath(request);
         HttpSession session = request.getSession();
         LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");
+        String redirect = Default.URL_ROOT;
         if(lg == null)
         {
-            response.sendRedirect("401");
+            redirect += "/401";
         }
         else {
-            if(lg.getlogedin()) {
                 String user = lg.getUsername();
                 String commentBody = request.getParameter("CommentBody");
 
@@ -53,14 +53,11 @@ public class ViewImage extends HttpServlet {
                 c.setCluster(cluster);
                 c.EnterComment(user,commentBody,args[2]);
 
-            }
-            else{
-
-            }
+            redirect += "/ViewImage/"+args[2];
 
 
         }
-        response.sendRedirect(Default.URL_ROOT+"/ViewImage/"+args[2]);
+        response.sendRedirect(redirect);
 
     }
 

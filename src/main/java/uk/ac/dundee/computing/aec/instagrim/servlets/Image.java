@@ -4,6 +4,7 @@ import com.datastax.driver.core.Cluster;
 import uk.ac.dundee.computing.aec.instagrim.lib.CassandraHosts;
 import uk.ac.dundee.computing.aec.instagrim.lib.Convertors;
 import uk.ac.dundee.computing.aec.instagrim.lib.DataException;
+import uk.ac.dundee.computing.aec.instagrim.lib.Default;
 import uk.ac.dundee.computing.aec.instagrim.models.PicModel;
 import uk.ac.dundee.computing.aec.instagrim.stores.LoggedIn;
 import uk.ac.dundee.computing.aec.instagrim.stores.Pic;
@@ -16,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.*;
 import java.util.HashMap;
+import java.util.ResourceBundle;
 
 /**
  * Servlet implementation class Image
@@ -57,6 +59,13 @@ public class Image extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String args[] = Convertors.SplitRequestPath(request);
+        HttpSession session = request.getSession();
+        LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");
+        String redirect = Default.URL_ROOT;
+        if(lg == null)
+        {
+            redirect += "/404";
+        }
         int command;
         try {
             command = (Integer) CommandsMap.get(args[1]);
@@ -77,6 +86,7 @@ public class Image extends HttpServlet {
             default:
                 error("Bad Operator", response);
         }
+        response.sendRedirect(redirect);
     }
 
     private void DisplayImageList(String User, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -124,7 +134,7 @@ public class Image extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");
-        if (lg.getlogedin()) {
+        if (lg == null) {
             response.sendRedirect("401");
         }
         String username = lg.getUsername();
