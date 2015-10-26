@@ -70,7 +70,7 @@ public class PicModel {
 
             //The following is a quick and dirty way of doing this, will fill the disk quickly !
             Boolean success = (new File("/var/tmp/" + Default.KEYSPACE_NAME + "/")).mkdirs();
-            FileOutputStream output = new FileOutputStream(new File("/var/tmp/instagrim/" + picid));
+            FileOutputStream output = new FileOutputStream(new File("/var/tmp/"+Default.KEYSPACE_NAME+"/" + picid));
 
             output.write(b);
             byte[] thumbb = picresize(picid.toString(), types[1]);
@@ -104,7 +104,8 @@ public class PicModel {
     // there as well.
     public byte[] picresize(String picid, String type) {
         try {
-            BufferedImage BI = ImageIO.read(new File("/var/tmp/" + Default.KEYSPACE_NAME+"/ " + picid));
+
+            BufferedImage BI = ImageIO.read(new File("/var/tmp/" + Default.KEYSPACE_NAME+"/" + picid));
                     BufferedImage thumbnail = createThumbnail(BI);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
@@ -123,7 +124,7 @@ public class PicModel {
 
     public byte[] picdecolour(String picid, String type) {
         try {
-            BufferedImage BI = ImageIO.read(new File("/var/tmp/"+Default.KEYSPACE_NAME+"/" + picid));
+            BufferedImage BI = ImageIO.read(new File("/var/tmp/"+ Default.KEYSPACE_NAME + "/" + picid));
             BufferedImage processed = createProcessed(BI);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(processed, type, baos);
@@ -234,8 +235,8 @@ public class PicModel {
             java.util.UUID picid = convertor.getTimeUUID();
 
             //The following is a quick and dirty way of doing this, will fill the disk quickly !
-            Boolean success = (new File("/var/tmp/"+"Default.KEYSPACE_NAME"+"/")).mkdirs();
-            FileOutputStream output = new FileOutputStream(new File("/var/tmp/instagrim/" + picid));
+            Boolean success = (new File("/var/tmp/" + Default.KEYSPACE_NAME + "/")).mkdirs();
+            FileOutputStream output = new FileOutputStream(new File("/var/tmp/" + Default.KEYSPACE_NAME + "/" + picid));
 
             output.write(b);
             byte[] thumbb = picresize(picid.toString(), types[1]);
@@ -252,8 +253,7 @@ public class PicModel {
                             "( picid, image,thumb,processed, user, interaction_time,imagelength,thumblength,processedlength,type,name)" +
                             " values(?,?,?,?,?,?,?,?,?,?,?)");
             PreparedStatement psInsertPicToUser = session.prepare(
-                    "update userprofiles set profile_pic = ? where login = ?")
-                    ;
+                    "update userprofiles set profile_pic = ? where login = ?");
             BoundStatement bsInsertPic = new BoundStatement(psInsertPic);
             BoundStatement bsInsertPicToUser = new BoundStatement(psInsertPicToUser);
 
