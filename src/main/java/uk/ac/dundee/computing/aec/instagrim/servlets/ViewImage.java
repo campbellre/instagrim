@@ -1,10 +1,8 @@
 package uk.ac.dundee.computing.aec.instagrim.servlets;
 
 import com.datastax.driver.core.Cluster;
-import uk.ac.dundee.computing.aec.instagrim.lib.CassandraHosts;
-import uk.ac.dundee.computing.aec.instagrim.lib.CommentWrapper;
-import uk.ac.dundee.computing.aec.instagrim.lib.Convertors;
-import uk.ac.dundee.computing.aec.instagrim.lib.Default;
+import org.omg.CORBA.RepositoryIdHelper;
+import uk.ac.dundee.computing.aec.instagrim.lib.*;
 import uk.ac.dundee.computing.aec.instagrim.models.Comment;
 import uk.ac.dundee.computing.aec.instagrim.stores.LoggedIn;
 
@@ -44,7 +42,7 @@ public class ViewImage extends HttpServlet {
         LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");
         if(lg == null)
         {
-            // Error message
+            response.sendRedirect("401");
         }
         else {
             if(lg.getlogedin()) {
@@ -74,7 +72,12 @@ public class ViewImage extends HttpServlet {
 
         Comment c = new Comment();
         c.setCluster(cluster);
-        TreeSet<CommentWrapper> comments = c.GetComments(args[2]);
+        TreeSet<CommentWrapper> comments = null;
+        try {
+            comments = c.GetComments(args[2]);
+        } catch (DataException e) {
+            e.printStackTrace();
+        }
         Iterator<CommentWrapper> it = comments.iterator();
 
         request.setAttribute("commentsi", it);

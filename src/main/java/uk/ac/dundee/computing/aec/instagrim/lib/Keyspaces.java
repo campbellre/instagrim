@@ -56,7 +56,7 @@ public final class Keyspaces {
                     "    comment text,\n" +
                     "    PRIMARY KEY (user, picid, time)\n" +
                     ")  WITH CLUSTERING ORDER BY (picid DESC, time DESC);";
-            String CreatePicCommentsIndex = "CREATE INDEX ON " + Default.KEYSPACE_NAME + ".piccomments (picid) ;";
+            String CreatePicCommentsIndex = "CREATE INDEX IF NOT EXISTS ON " + Default.KEYSPACE_NAME + ".piccomments (picid) ;";
             Session session = c.connect();
             try {
                 PreparedStatement statement = session

@@ -11,5 +11,5 @@ public final class Default {
 
     public static String KEYSPACE_NAME = "instagrim";
 
-    public static String URL_ROOT = "Instagrim";
+    public static String URL_ROOT = "/Instagrim";
 }

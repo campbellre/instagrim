@@ -82,6 +82,8 @@ public class Profile extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
+        System.out.print(request.getContextPath());
+
         UserDetails ud = new UserDetails();
 
         HttpSession session = request.getSession();
